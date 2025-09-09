@@ -3,22 +3,26 @@ package partida;
 public class Animal {
 	private int id;
 	private String nome;
+	private String dono;
 	private String evolucao;
+	private int totalPontos;
+	private int pontosEvoluir;
 	private int x;
 	
 	public Animal(int id, String nome, String evolucao, int x) {
-		super();
 		this.id = id;
 		this.nome = nome;
 		this.evolucao = evolucao;
 		this.x = x;
 	}
 	
-	public Animal(int id, String nome, String evolucao) {
-		super();
+	public Animal(int id, String nome, String evolucao, int pontosEvoluir, String dono) {
 		this.id = id;
 		this.nome = nome;
+		this.dono = dono;
 		this.evolucao = evolucao;
+		totalPontos = 0;
+		this.pontosEvoluir = pontosEvoluir;
 		this.x = 0;
 	}
 
@@ -48,5 +52,25 @@ public class Animal {
 
 	public int getId() {
 		return id;
+	}
+
+	public int getTotalPontos() {
+		return totalPontos;
+	}
+
+	public void setTotalPontos(int totalPontos) {
+		this.totalPontos = totalPontos;
+	}
+
+	public int getPontosEvoluir() {
+		return pontosEvoluir;
+	}
+
+	public void setPontosEvoluir(int pontosEvoluir) {
+		this.pontosEvoluir = pontosEvoluir;
+	}
+
+	public String getDono() {
+		return dono;
 	}
 }

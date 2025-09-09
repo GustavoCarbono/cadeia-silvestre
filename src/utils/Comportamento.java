@@ -1,5 +1,6 @@
 package utils;
 
+import model.DAO;
 import partida.Animal;
 import partida.Tabuleiro;
 
@@ -9,7 +10,9 @@ public class Comportamento {
 		// aplica comportamento
 	}
 	
-	public void predacao(Animal animal, Animal presa, Tabuleiro tabuleiro) {
-		// aplica predação e evolução
+	public void predacao(Animal animal, Animal presa, Tabuleiro tabuleiro, int pontos, DAO dao) {
+		Evoluir evoluir = new Evoluir();
+		tabuleiro.getGrid(animal.getX()).removeAnimal(presa.getId());//remove animal do tabuleiro
+		evoluir.aumentarPontos(animal, tabuleiro, pontos, dao);
 	}
 }

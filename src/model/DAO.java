@@ -2,6 +2,11 @@ package model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DAO {
 	private Connection con;
@@ -11,12 +16,67 @@ public class DAO {
 	private String password = "1234";
 	
 	public Connection conectar() {
-		try {
+		try {//conecta com o banco de dados
 			Class.forName(driver);
 			con = DriverManager.getConnection(url,user, password);
 			return con;
 		} catch (Exception e) {
+			System.out.println("Erro de conexão");
 			System.out.println(e);
+			return null;
+		}
+	}
+	
+	public AnimaisDAO buscarAnimal(String animal) {// busca animais pelo nome
+		String sql = "SELECT * FROM tbAnimais WHERE nomeAnimal = '"+animal+"'";
+		
+		try (PreparedStatement stmt = con.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery()){
+			if(rs.next()) {
+				return new AnimaisDAO(rs.getString("nomeAnimal"),
+							rs.getString("evolucao"), rs.getInt("evoluirPontos"));
+			} else {
+				System.out.println("resultado não encontrado");
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<PredacaoDAO> buscarPresa(String animal) {// retorna todas as presas do animal
+		List<PredacaoDAO> predacao = new ArrayList<>();
+		String sql = "SELECT nomePredador, nomePresa, pontosEvolucao FROM tbPredacao WHERE nomeAnimal = '"+animal+"'";
+		
+		try (PreparedStatement stmt = con.prepareStatement(sql);
+				ResultSet rs = stmt.executeQuery()) {
+			while(rs.next()) {
+				predacao.add(new PredacaoDAO(rs.getString("nomePredador"),
+						rs.getString("nomePresa"), rs.getInt("pontosEvolucao")));
+			}
+			return predacao;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<ComportamentoDAO> buscarComportamento(String animal) {//mostra todos os comportamentos do animal
+		List<ComportamentoDAO> comportamento = new ArrayList<>();
+		String sql = "SELECT nomeAnimal, nomeAlvo, comportamento FROM tbComportamentoAnimal"
+				+ " INNER JOIN tbComportamento ON tbComportamento_animal.idComportamento = tbComportamento.idComportamento"
+				+ " WHERE nomeAnimal = '"+animal+"'";
+		
+		try (PreparedStatement stmt = con.prepareStatement(sql);
+				ResultSet rs = stmt.executeQuery()) {
+			while(rs.next()) {
+				comportamento.add(new ComportamentoDAO(rs.getString("nomeAnimal"),
+						rs.getString("nomeAlvo"), rs.getString("comportamento")));
+			}
+			return comportamento;
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

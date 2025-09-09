@@ -28,13 +28,13 @@ public class Celula {
 	}
 	
 	public List<Animal> getAnimais() {
-		return animais;
+		return animais;				//retorna todos os animais
 	}
 	
 	public void setAnimal(Animal animal, int id) {
-		if (!animais.isEmpty()) { // ver se tem animais na casa
+		if (!animais.isEmpty()) { 	// ver se tem animais na casa
 			for(Animal animalUni : animais) {
-				if (animalUni.getId() == id) { // comparar id do animal
+				if (animalUni.getId() == id) { // pega o animal procurado
 					animalUni.setNome(animal.getNome());
 					animalUni.setEvolucao(animal.getEvolucao());
 				}

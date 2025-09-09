@@ -2,17 +2,40 @@ package utils;
 
 import java.util.List;
 
+import model.ComportamentoDAO;
+import model.DAO;
+import model.PredacaoDAO;
 import partida.Animal;
 import partida.Tabuleiro;
 
 public class ValidarComportamento {
 	
-	public void validarComportamento(Animal animal, Tabuleiro tabuleiro) {
-		List<Animal> animais = tabuleiro.getGrid(animal.getX()).getAnimais();
-		//método que tem resultado de select
-		for(Animal animalUni : animais) {
-			// dois if ver se tem animais alvo ou presa
-			// se sim chama o método de comportamento ou presa
+	public void validarComportamento(Animal animal, Tabuleiro tabuleiro, DAO dao) {
+		List<Animal> animais = tabuleiro.getGrid(animal.getX()).getAnimais();//todos os animais do quadrado
+		
+		//chamando tabela do mysql
+		List<ComportamentoDAO> comportamentos = dao.buscarComportamento(animal.getNome());
+		List<PredacaoDAO> predacao = dao.buscarPresa(animal.getNome());
+		
+		Comportamento comportar = new Comportamento();
+		
+		for(Animal animalUni : animais) {//animal isolado
+			if (comportamentos != null) {
+				for(ComportamentoDAO comportamento : comportamentos) {
+					if(comportamento.getNomeAlvo().equals(animalUni)) {
+						comportar.comportar(animal, animalUni, comportamento.getComportamento(), tabuleiro);
+					}
+				}
+			}
+			if (predacao != null) {
+				if(animalUni.getDono() != null) {//não tem predação com animais de outros jogadores
+					for(PredacaoDAO predacaoUni : predacao) {//verifica se animal alvo é presa
+						if(predacaoUni.getNomePresa().equals(animalUni)) {
+							comportar.predacao(animal, animalUni, tabuleiro, predacaoUni.getPontosEvolucao(), dao);
+						}
+					}
+				}
+			}
 		}
 	}
 }
