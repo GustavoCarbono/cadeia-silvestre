@@ -47,7 +47,7 @@ public class DAO {
 	
 	public List<PredacaoDAO> buscarPresa(String animal) {// retorna todas as presas do animal
 		List<PredacaoDAO> predacao = new ArrayList<>();
-		String sql = "SELECT nomePredador, nomePresa, pontosEvolucao FROM tbPredacao WHERE nomeAnimal = '"+animal+"'";
+		String sql = "SELECT nomePredador, nomePresa, pontosEvolucao FROM tbPredacao WHERE nomePredador = '"+animal+"'";
 		
 		try (PreparedStatement stmt = con.prepareStatement(sql);
 				ResultSet rs = stmt.executeQuery()) {
@@ -65,7 +65,7 @@ public class DAO {
 	public List<ComportamentoDAO> buscarComportamento(String animal) {//mostra todos os comportamentos do animal
 		List<ComportamentoDAO> comportamento = new ArrayList<>();
 		String sql = "SELECT nomeAnimal, nomeAlvo, comportamento FROM tbComportamentoAnimal"
-				+ " INNER JOIN tbComportamento ON tbComportamento_animal.idComportamento = tbComportamento.idComportamento"
+				+ " INNER JOIN tbComportamento ON tbComportamentoAnimal.idComportamento = tbComportamento.idComportamento"
 				+ " WHERE nomeAnimal = '"+animal+"'";
 		
 		try (PreparedStatement stmt = con.prepareStatement(sql);

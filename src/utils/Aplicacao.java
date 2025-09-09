@@ -32,6 +32,6 @@ public class Aplicacao {
 			if(partida.getTurnoAtual()%8 == 0) {
 				//metodo que começa um minijogo
 			}
-		} while (partida.getTurnoAtual() <= 10);
+		} while (partida.getTurnoAtual() <= 40);
 	}
 }

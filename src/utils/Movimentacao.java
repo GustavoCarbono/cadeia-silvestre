@@ -20,8 +20,11 @@ public class Movimentacao {
 		int x = animal.getX()+numRdm;//o quadrado do animal mais o valor rolado
 		
 		if (x >= tabuleiro.getGridCount()) {//quantidade de quadrados do tabuleiro
+			tabuleiro.getGrid(animal.getX())
+				.removeAnimal(animal.getId()); // remove o animal do quadrado
 			
 			animal.setX(x - tabuleiro.getGridCount());
+			tabuleiro.getGrid(x - tabuleiro.getGridCount()).addAnimal(animal);
 			System.out.println("o animal "+animal.getNome()+"deu uma volta agora está no quadrado "+animal.getX());
 			evoluir.aumentarPontos(animal, tabuleiro, (animal.getPontosEvoluir()/2), dao);//adiciona metade do total de pontos da evolução
 			// quando dar uma volta

@@ -19,10 +19,10 @@ public class Celula {
 					return animal;
 				}
 			}
-			System.out.println("Não foi possivel achar o animal");
+			System.out.println("Não foi possivel achar o animal1");
 			return null;
 		} else {
-			System.out.println("Não tem animal nessa casa");
+			System.out.println("Não tem animal nessa casa2");
 			return null;
 		}
 	}
@@ -39,7 +39,6 @@ public class Celula {
 					animalUni.setEvolucao(animal.getEvolucao());
 				}
 			}
-			System.out.println("Não foi possivel achar o animal");
 		} else {
 			System.out.println("Não tem animal nessa casa");
 		}
