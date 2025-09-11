@@ -9,10 +9,12 @@ public class Partida {
 	private Tabuleiro tabuleiro;
 	private int turnoAtual;
 	private List<Jogador> ordemJogador;
+	private boolean finalizou;
 	
 	public Partida(int x, List<Jogador> jogadores) {
 		tabuleiro = new Tabuleiro(x);//inicia tabuleiro
 		turnoAtual = 1;
+		finalizou = false;
 		if (jogadores.size() <= 4 && jogadores.size() > 1) { // de 2 a 4 jogadores			
 			this.jogadores = new ArrayList<>(jogadores);
 			for(Jogador jogador : jogadores) {
@@ -51,5 +53,13 @@ public class Partida {
 
 	public void mudarOrdemJogador() {
 		Collections.rotate(ordemJogador, -1);
-	}	
+	}
+	
+	public boolean getFinalizou() {
+		return finalizou;
+	}
+	
+	public void setFinalizou(boolean finalizou) {
+		this.finalizou = finalizou;
+	}
 }

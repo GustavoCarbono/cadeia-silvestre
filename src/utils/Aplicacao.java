@@ -12,7 +12,6 @@ public class Aplicacao {
 	public static void main(String[] args) {
 		DAO dao = new DAO();
 		dao.conectar();
-		//boolean acabou = false;
 		//Escolher animais e nomes dos jogadores
 		
 		// temporario
@@ -26,12 +25,12 @@ public class Aplicacao {
 		Partida partida = new Partida(20, jogadores);
 		do {
 			// animação de dado
-			mov.mover(partida.getOrdemJogador().get(0), partida.getTabuleiro(), dao);
+			mov.mover(partida.getOrdemJogador().get(0), partida, dao);
 			partida.aumentarTurnoAtual();
 			partida.mudarOrdemJogador();
 			if(partida.getTurnoAtual()%8 == 0) {
 				//metodo que começa um minijogo
 			}
-		} while (partida.getTurnoAtual() <= 40);
+		} while (!partida.getFinalizou() || partida.getTurnoAtual() < 20);
 	}
 }

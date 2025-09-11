@@ -5,12 +5,12 @@ import java.util.Random;
 import model.DAO;
 import partida.Animal;
 import partida.Jogador;
-import partida.Tabuleiro;
+import partida.Partida;
 
 public class Movimentacao {
 	private int numRdm;
 
-	public boolean mover(Jogador jogador, Tabuleiro tabuleiro, DAO dao) {
+	public boolean mover(Jogador jogador, Partida partida, DAO dao) {
 		Random rdm = new Random();
 		ValidarComportamento comportar = new ValidarComportamento();
 		Evoluir evoluir = new Evoluir();
@@ -19,26 +19,26 @@ public class Movimentacao {
 		Animal animal = jogador.getAnimal();
 		int x = animal.getX()+numRdm;//o quadrado do animal mais o valor rolado
 		
-		if (x >= tabuleiro.getGridCount()) {//quantidade de quadrados do tabuleiro
-			tabuleiro.getGrid(animal.getX())
+		if (x >= partida.getTabuleiro().getGridCount()) {//quantidade de quadrados do tabuleiro
+			partida.getTabuleiro().getGrid(animal.getX())
 				.removeAnimal(animal.getId()); // remove o animal do quadrado
 			
-			animal.setX(x - tabuleiro.getGridCount());
-			tabuleiro.getGrid(x - tabuleiro.getGridCount()).addAnimal(animal);
+			animal.setX(x - partida.getTabuleiro().getGridCount());
+			partida.getTabuleiro().getGrid(x - partida.getTabuleiro().getGridCount()).addAnimal(animal);
 			System.out.println("o animal "+animal.getNome()+"deu uma volta agora está no quadrado "+animal.getX());
-			evoluir.aumentarPontos(animal, tabuleiro, (animal.getPontosEvoluir()/2), dao);//adiciona metade do total de pontos da evolução
+			evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao);//adiciona metade do total de pontos da evolução
 			// quando dar uma volta
 			return true;
 		} else {
-			tabuleiro.getGrid(animal.getX())
+			partida.getTabuleiro().getGrid(animal.getX())
 				.removeAnimal(animal.getId());// remove o animal do quadrado
 
 			animal.setX(x);
-			tabuleiro.getGrid(x).addAnimal(animal); // coloca o animal no novo quadrado
+			partida.getTabuleiro().getGrid(x).addAnimal(animal); // coloca o animal no novo quadrado
 			System.out.println("o animal "+animal.getNome()+" moveu para o quadrado "+animal.getX());
 			
 			// espaço para chamar método de inteface
-			comportar.validarComportamento(animal, tabuleiro, dao);//aplica o comportamento e predação
+			comportar.validarComportamento(animal, partida, dao);//aplica o comportamento e predação
 			return true;
 		}
 	}
