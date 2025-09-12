@@ -6,11 +6,12 @@ import model.DAO;
 import partida.Animal;
 import partida.Jogador;
 import partida.Partida;
+import view.Interface;
 
 public class Movimentacao {
 	private int numRdm;
 
-	public boolean mover(Jogador jogador, Partida partida, DAO dao) {
+	public boolean mover(Jogador jogador, Partida partida, DAO dao, Interface gui) {
 		Random rdm = new Random();
 		ValidarComportamento comportar = new ValidarComportamento();
 		Evoluir evoluir = new Evoluir();
@@ -26,7 +27,7 @@ public class Movimentacao {
 			animal.setX(x - partida.getTabuleiro().getGridCount());
 			partida.getTabuleiro().getGrid(x - partida.getTabuleiro().getGridCount()).addAnimal(animal);
 			System.out.println("o animal "+animal.getNome()+"deu uma volta agora está no quadrado "+animal.getX());
-			evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao);//adiciona metade do total de pontos da evolução
+			evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao, gui);//adiciona metade do total de pontos da evolução
 			// quando dar uma volta
 			return true;
 		} else {
@@ -38,7 +39,7 @@ public class Movimentacao {
 			System.out.println("o animal "+animal.getNome()+" moveu para o quadrado "+animal.getX());
 			
 			// espaço para chamar método de inteface
-			comportar.validarComportamento(animal, partida, dao);//aplica o comportamento e predação
+			comportar.validarComportamento(animal, partida, dao, gui);//aplica o comportamento e predação
 			return true;
 		}
 	}

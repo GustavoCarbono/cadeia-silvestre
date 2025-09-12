@@ -7,10 +7,11 @@ import model.DAO;
 import model.PredacaoDAO;
 import partida.Animal;
 import partida.Partida;
+import view.Interface;
 
 public class ValidarComportamento {
 	
-	public void validarComportamento(Animal animal, Partida partida, DAO dao) {
+	public void validarComportamento(Animal animal, Partida partida, DAO dao, Interface gui) {
 		List<Animal> animais = partida.getTabuleiro().getGrid(animal.getX()).getAnimais();//todos os animais do quadrado
 		
 		//chamando tabela do mysql
@@ -23,7 +24,7 @@ public class ValidarComportamento {
 			if (comportamentos != null) {
 				for(ComportamentoDAO comportamento : comportamentos) {
 					if(comportamento.getNomeAlvo().equals(animalUni)) {
-						comportar.comportar(animal, animalUni, comportamento.getComportamento(), partida);
+						comportar.comportar(animal, animalUni, comportamento.getComportamento(), partida, gui);
 					}
 				}
 			}
@@ -31,7 +32,7 @@ public class ValidarComportamento {
 				if(animalUni.getDono() != null) {//não tem predação com animais de outros jogadores
 					for(PredacaoDAO predacaoUni : predacao) {//verifica se animal alvo é presa
 						if(predacaoUni.getNomePresa().equals(animalUni)) {
-							comportar.predacao(animal, animalUni, partida, predacaoUni.getPontosEvolucao(), dao);
+							comportar.predacao(animal, animalUni, partida, predacaoUni.getPontosEvolucao(), dao, gui);
 						}
 					}
 				}

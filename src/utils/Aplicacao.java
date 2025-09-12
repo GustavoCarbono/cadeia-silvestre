@@ -7,11 +7,13 @@ import model.DAO;
 import partida.Animal;
 import partida.Jogador;
 import partida.Partida;
+import view.Interface;
 
 public class Aplicacao {
 	public static void main(String[] args) {
 		DAO dao = new DAO();
 		dao.conectar();
+		Interface gui = new Interface();
 		//Escolher animais e nomes dos jogadores
 		
 		// temporario
@@ -25,7 +27,7 @@ public class Aplicacao {
 		Partida partida = new Partida(20, jogadores);
 		do {
 			// animação de dado
-			mov.mover(partida.getOrdemJogador().get(0), partida, dao);
+			mov.mover(partida.getOrdemJogador().get(0), partida, dao, gui);//número do dado dentro desse método
 			partida.aumentarTurnoAtual();
 			partida.mudarOrdemJogador();
 			if(partida.getTurnoAtual()%8 == 0) {
