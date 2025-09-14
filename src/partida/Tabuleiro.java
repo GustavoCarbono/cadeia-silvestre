@@ -15,7 +15,7 @@ public class Tabuleiro {
 		for(int i=0; i<x; i++) {
 			Grid[i] = new Celula(0, i);
 		}
-		
+		GridAlternativo = new ArrayList<>();
 		for(int i=0; i<xAlternativo.size(); i++) {
 			Celula[] alternativo = new Celula[xAlternativo.get(i)];
 			

@@ -15,13 +15,13 @@ public class Partida {
 		tabuleiro = new Tabuleiro(x, xAlt, comecos, fins);//inicia tabuleiro
 		turnoAtual = 1;
 		finalizou = false;
-		if (jogadores.size() <= 4 && jogadores.size() > 1) { // de 2 a 4 jogadores			
-			this.jogadores = new ArrayList<>(jogadores);
+		if (jogadoresList.size() <= 4 && jogadoresList.size() > 1) { // de 2 a 4 jogadores			
+			this.jogadores = new ArrayList<>(jogadoresList);
 			for(Jogador jogador : jogadores) {
 				tabuleiro.getGridMain(0).addAnimal(jogador.getAnimal());//adiciona o animal do jogador no quadrado 0
 			}
 			randomizarJogadores();//randomiza a ondem dos jogadores
-			ordemJogador = new ArrayList<Jogador>(this.jogadores);
+			ordemJogador = new ArrayList<>(this.jogadores);
 		} else {
 			System.out.println("quantidade de jogadores inválida");
 		}
