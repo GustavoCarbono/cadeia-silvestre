@@ -4,12 +4,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Celula {
-	public int x;
+	private int caminhoId;
+	private int x;
 	private List<Animal> animais;
 	
-	public Celula(int x) {
+	private Celula caminhoAlternativo;
+	private boolean outroCaminho;
+	
+	private Celula retornoCaminho;
+	
+	public Celula(int caminhoId, int x) {
+		this.caminhoId = caminhoId;
 		this.x = x;
 		this.animais = new ArrayList<>();
+	}
+	
+	public int getCaminhoId() {
+		return caminhoId;
+	}
+	
+	public void setCaminhoAlternativo(Celula caminho) {
+		this.caminhoAlternativo = caminho;
+		this.outroCaminho = true;
+	}
+	
+	public Celula getCaminhoAlternativo() {
+		return caminhoAlternativo;
+	}
+	
+	public boolean getOutroCaminho() {
+		return outroCaminho;
+	}
+	
+	public void setRetornoCaminho(Celula caminho) {
+		this.retornoCaminho = caminho;
+	}
+	
+	public Celula getRetornoCaminho() {
+		return retornoCaminho;
+	}
+	
+	public int getX() {
+		return x;
 	}
 	
 	public Animal getAnimal(int id) {

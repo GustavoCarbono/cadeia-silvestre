@@ -11,14 +11,14 @@ public class Partida {
 	private List<Jogador> ordemJogador;
 	private boolean finalizou;
 	
-	public Partida(int x, List<Jogador> jogadores) {
-		tabuleiro = new Tabuleiro(x);//inicia tabuleiro
+	public Partida(int x, List<Jogador> jogadoresList, List<Integer> xAlt, List<Integer> comecos, List<Integer> fins) {
+		tabuleiro = new Tabuleiro(x, xAlt, comecos, fins);//inicia tabuleiro
 		turnoAtual = 1;
 		finalizou = false;
 		if (jogadores.size() <= 4 && jogadores.size() > 1) { // de 2 a 4 jogadores			
 			this.jogadores = new ArrayList<>(jogadores);
 			for(Jogador jogador : jogadores) {
-				tabuleiro.getGrid(0).addAnimal(jogador.getAnimal());//adiciona o animal do jogador no quadrado 0
+				tabuleiro.getGridMain(0).addAnimal(jogador.getAnimal());//adiciona o animal do jogador no quadrado 0
 			}
 			randomizarJogadores();//randomiza a ondem dos jogadores
 			ordemJogador = new ArrayList<Jogador>(this.jogadores);

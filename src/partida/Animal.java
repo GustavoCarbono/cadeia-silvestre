@@ -8,6 +8,7 @@ public class Animal {
 	private int totalPontos;
 	private int pontosEvoluir;
 	private int x;
+	private int caminho;//0 = caminho principal, resto igual outros caminho
 	
 	public Animal(int id, String nome, String evolucao, int x) {
 		this.id = id;
@@ -21,9 +22,10 @@ public class Animal {
 		this.nome = nome;
 		this.dono = dono;
 		this.evolucao = evolucao;
-		totalPontos = 0;
+		this.totalPontos = 0;
 		this.pontosEvoluir = pontosEvoluir;
 		this.x = 0;
+		this.caminho = 0;
 	}
 
 	public String getNome() {
@@ -73,4 +75,14 @@ public class Animal {
 	public String getDono() {
 		return dono;
 	}
+
+	public int getCaminho() {
+		return caminho;
+	}
+
+	public void setCaminho(int caminho) {
+		this.caminho = caminho;
+	}
+	
+	
 }

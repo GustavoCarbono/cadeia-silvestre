@@ -10,27 +10,32 @@ import view.Interface;
 public class Evoluir {
 	
 	public void aumentarPontos(Animal animal, Partida partida, int pontos, DAO dao, Interface gui) {
-		Celula animalCel = partida.getTabuleiro().getGrid(animal.getX());
+		Celula celula = (animal.getCaminho() == 0) 
+				? partida.getTabuleiro().getGridMain(animal.getX()) 
+				: partida.getTabuleiro().getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
 		
 		if(animal.getTotalPontos() >= (animal.getPontosEvoluir()+pontos)) {	//verifica se tem pontos para evoluir
 			int p = animal.getTotalPontos()-animal.getPontosEvoluir();	//pontos restantes para evolução
 			evoluir(animal, partida, dao, gui);	//evolui
 			animal.setPontosEvoluir(pontos-p);	//coloca a sobra dos pontos 
-			animalCel.setAnimal(animal, animal.getId());
+			celula.setAnimal(animal, animal.getId());
 		} else {
 			animal.setPontosEvoluir(animal.getPontosEvoluir()+pontos);	//apenas adiciona pontos
-			animalCel.setAnimal(animal, animal.getId());
+			celula.setAnimal(animal, animal.getId());
 		}
 	}
 	
 	public void evoluir(Animal animal, Partida partida, DAO dao, Interface gui) {
 		AnimaisDAO evolucao = dao.buscarAnimal(animal.getEvolucao()); //chama tabela do mysql
+		Celula celula = (animal.getCaminho() == 0) 
+				? partida.getTabuleiro().getGridMain(animal.getX()) 
+				: partida.getTabuleiro().getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
 		
 		//troca o animal para a evolução
 		animal.setNome(evolucao.getNome());
 		animal.setEvolucao(evolucao.getEvolucao());
 		animal.setPontosEvoluir(evolucao.getEvoluirPontos());
-		partida.getTabuleiro().getGrid(animal.getX()).setAnimal(animal, animal.getId());//aplica no tabuleiro
+		celula.setAnimal(animal, animal.getId());//aplica no tabuleiro
 		//método para atualizar a interface
 		if(animal.getEvolucao() == null) {
 			partida.setFinalizou(true);
