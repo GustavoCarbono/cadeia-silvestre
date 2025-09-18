@@ -17,10 +17,10 @@ public class Evoluir {
 		if(animal.getTotalPontos() >= (animal.getPontosEvoluir()+pontos)) {	//verifica se tem pontos para evoluir
 			int p = animal.getTotalPontos()-animal.getPontosEvoluir();	//pontos restantes para evolução
 			evoluir(animal, partida, dao, gui);	//evolui
-			animal.setPontosEvoluir(pontos-p);	//coloca a sobra dos pontos 
+			animal.setTotalPontos(pontos-p);	//coloca a sobra dos pontos 
 			celula.setAnimal(animal, animal.getId());
 		} else {
-			animal.setPontosEvoluir(animal.getPontosEvoluir()+pontos);	//apenas adiciona pontos
+			animal.setTotalPontos(animal.getPontosEvoluir()+pontos);	//apenas adiciona pontos
 			celula.setAnimal(animal, animal.getId());
 		}
 	}
@@ -30,7 +30,7 @@ public class Evoluir {
 		Celula celula = (animal.getCaminho() == 0) 
 				? partida.getTabuleiro().getGridMain(animal.getX()) 
 				: partida.getTabuleiro().getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
-		
+		System.out.println("o animal "+animal.getNome()+" evoluiu para "+evolucao.getNome());
 		//troca o animal para a evolução
 		animal.setNome(evolucao.getNome());
 		animal.setEvolucao(evolucao.getEvolucao());
@@ -38,6 +38,7 @@ public class Evoluir {
 		celula.setAnimal(animal, animal.getId());//aplica no tabuleiro
 		//método para atualizar a interface
 		if(animal.getEvolucao() == null) {
+			System.out.println("acabou");
 			partida.setFinalizou(true);
 		}
 	}

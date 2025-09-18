@@ -46,6 +46,6 @@ public class Aplicacao {
 			if(partida.getTurnoAtual()%8 == 0) {
 				//metodo que começa um minijogo
 			}
-		} while (!partida.getFinalizou() || partida.getTurnoAtual() < 20);
+		} while (!partida.getFinalizou() && partida.getTurnoAtual() < 80);
 	}
 }

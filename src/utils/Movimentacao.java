@@ -81,7 +81,7 @@ public class Movimentacao {
 				if (celula.getCaminhoId() == 0) {
 					celula.removeAnimal(animal.getId());// remove o animal do quadrado
 					animal.setX(pos-count+1);//atualiza o dado da posicao do animal
-					System.out.println("o animal "+animal.getNome()+"deu uma volta agora está no quadrado "+pos);
+					System.out.println("o animal "+animal.getNome()+" deu uma volta");
 					// coloca o animal no novo quadrado
 					tabuleiro.getGridMain(0).addAnimal(animal);
 					evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao, gui);//adiciona metade do total de pontos da evolução
@@ -99,7 +99,6 @@ public class Movimentacao {
 			} else {
 				celula.removeAnimal(animal.getId());// remove o animal do quadrado
 				animal.setX(pos+1);//atualiza o dado da posicao do animal
-				System.out.println("o animal "+animal.getNome()+" moveu para o quadrado "+animal.getX());
 				// coloca o animal no novo quadrado
 				if(celula.getCaminhoId() == 0) {
 					tabuleiro.getGridMain(pos+1).addAnimal(animal);
