@@ -21,6 +21,7 @@ public class Movimentacao {
 		Tabuleiro tabuleiro = partida.getTabuleiro();
 		
 		numRdm = rdm.nextInt(6)+1; // dado 1 a 6
+		// animação de dado interface
 		Animal animal = jogador.getAnimal();
 		
 		Celula celula = (animal.getCaminho() == 0) 
