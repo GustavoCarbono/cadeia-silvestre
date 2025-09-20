@@ -1,34 +1,30 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 
-import partida.Animal;
-import partida.Celula;
 import partida.Jogador;
+import partida.Tabuleiro;
 
 public class Interface extends JFrame {
     
-    private Posicao posicao = new Posicao();
+    private Posicao posicao;
     private CelulaView[] celulas;
-	private CelulaView celulaBase = new Celula();
+	private int indexBase = 0;
 	private JLayeredPane layeredPane = new JLayeredPane();
 	private int CelulaLargura;
 	private int CelulaAltura;
     
-    public Interface(List<Jogador> jogadores, int x) {
+    public Interface(List<Jogador> jogadores, int x, Tabuleiro tabuleiro) {
     	
-    	 celulas = new CelulaView[x];
-    	
+    	celulas = new CelulaView[x];
+
     	CelulaLargura = 115;
     	CelulaAltura = 115;
     	
@@ -43,23 +39,18 @@ public class Interface extends JFrame {
     	};
     	int i = 0;
     	for(Jogador jogador : jogadores) {
-    		
+    		animalJogador.add(new AnimalView(jogador.getAnimal(), 40, 40, offset[i][0], offset[i][1]));
+    		i++;
     	}
     	
-        celulas = new CelulaView[26];
-        
         criarTabuleiro();
 
-        JButton btn = new JButton("Rolar Dado (agora funcional)");
-		btn.addActionListener(e -> );
+        JButton btn = new JButton("Rolar Dado (agora não funcional)");
+		//btn.addActionListener(e -> );
 		btn.setBounds(1200, 100, 300, 50);
 		btn.setBackground(new Color(100, 100, 100));
 		btn.setOpaque(true);
 		layeredPane.add(btn);
-        
-        adicionarAnimalACasa(macacoLabel, 0);
-        
-        adicionarAnimalACasa(emaLabel, 0);
 
         setVisible(true);
         
@@ -87,7 +78,7 @@ public class Interface extends JFrame {
 		CelulaView oldCell = celulas[antigaPos + 1];
 		
 		//remove a imagem da celula
-		oldCell.remove(animal); 
+		oldCell.removeAnimal(animal.getAnimal().getId()); 
 		
 		//mesmo do de baixo
 		oldCell.revalidate();
@@ -101,7 +92,7 @@ public class Interface extends JFrame {
 
 
 		 CelulaView newCell = celulas[novaPos + 1];
-		 newCell.add(animal.img); 
+		 newCell.add(animal.getLabel()); 
 		 
 		 newCell.revalidate();
 		 newCell.repaint();
@@ -111,73 +102,65 @@ public class Interface extends JFrame {
 	}
     
     public void criarTabuleiro() {
-    	posicao.posX = 250;
-    	posicao.posY = 712;
+    	posicao = new Posicao(250, 730);
     	
-    	criarCelulas(1, posicao.posX, posicao.posY, "I");
-    	criarCelulas(6, posicao.posX, posicao.posY, "C");
-    	criarCelulas(2, posicao.posX, posicao.posY, "E");
-    	criarCelulas(2, posicao.posX, posicao.posY, "B");
-    	criarCelulas(7, posicao.posX, posicao.posY, "D");
-    	criarCelulas(2, posicao.posX, posicao.posY, "C");
-    	criarCelulas(2, posicao.posX, posicao.posY, "E");
-    	criarCelulas(6, posicao.posX, posicao.posY, "B");
-    	criarCelulas(2, posicao.posX, posicao.posY, "D");
-    	criarCelulas(2, posicao.posX, posicao.posY, "C");
-    	criarCelulas(7, posicao.posX, posicao.posY, "E");
-    	criarCelulas(2, posicao.posX, posicao.posY, "B");
-    	criarCelulas(1, posicao.posX, posicao.posY, "D");
+    	indexBase = 1;
+    	
+    	criarCelulas(7, posicao.getPosX(), posicao.getPosY(), "C");
+    	criarCelulas(6, posicao.getPosX(), posicao.getPosY(), "D");
+    	criarCelulas(6, posicao.getPosX(), posicao.getPosY(), "B");
+    	criarCelulas(5, posicao.getPosX(), posicao.getPosY(), "E");
     	
     }
 
 public void criarCelulas(int qtdCelulas, int ultimoX, int ultimoY, String direcao) {
     	
-    	int gap = 111;
-    	int tamanho = 110;
+    	int gap = 101;
+    	int tamanho = 100;
     	
     	switch(direcao) {
     	
 	    	case "D":
 	    		for(int i = 0; i < qtdCelulas; i++) {            	
 	    			//essa classe de posição é pra poder usar ela no codigo todo com um valor mais flexivel
-	            	posicao.posX = ultimoX + gap * (i + 1);	            	
+	            	posicao.setPosX(ultimoX + gap * (i + 1));            	
 	            	
 	            	//celulabase.id é so pra usar como numerador de 0 a 25 pras celulas
-	            	celulas[celulaBase.id] = new Celula(posicao.posX, ultimoY, tamanho);
+	            	celulas[indexBase] = new CelulaView(posicao.getPosX(), ultimoY, tamanho, tamanho);
 	            	
 	            	//layeredpane bota as imagem em cima dos label
-	    	        layeredPane.add(celulas[celulaBase.id],  Integer.valueOf(1));	    	        
-	    	        celulaBase.id++;
+	    	        layeredPane.add(celulas[indexBase],  Integer.valueOf(1));	    	        
+	    	        indexBase++;
 	        	}
 	    		
 	    		break;
 	    		
 	    	case "E":
 	    		for(int i = 0; i < qtdCelulas; i++) {
-	    	        posicao.posX = ultimoX - gap * (i + 1);
-	            	celulas[celulaBase.id] = new Celula(posicao.posX, ultimoY, tamanho);
-	    	        layeredPane.add(celulas[celulaBase.id],  Integer.valueOf(1));
-	    	        celulaBase.id++;     
+	    			posicao.setPosX(ultimoX - gap * (i + 1));
+	            	celulas[indexBase] = new CelulaView(posicao.getPosX(), ultimoY, tamanho, tamanho);
+	    	        layeredPane.add(celulas[indexBase],  Integer.valueOf(1));
+	    	        indexBase++;     
 	        	}
 	    		
 	    		break;
 	    		
 	    	case "C":
 	    		for(int i = 0; i < qtdCelulas; i++) { 
-	    	        posicao.posY = ultimoY - gap * (i + 1);
-	            	celulas[celulaBase.id] = new Celula(ultimoX, posicao.posY, tamanho);
-	    	        layeredPane.add(celulas[celulaBase.id],  Integer.valueOf(1));	    	        
-	    	        celulaBase.id++;
+	    			posicao.setPosY(ultimoY - gap * (i + 1));
+	            	celulas[indexBase] = new CelulaView(ultimoX, posicao.getPosY(), tamanho, tamanho);
+	    	        layeredPane.add(celulas[indexBase],  Integer.valueOf(1));	    	        
+	    	        indexBase++;
 	        	}
 	    		
 	    		break;
 	    		
 	    	case "B":
 	    		for(int i = 0; i < qtdCelulas; i++) {
-	    			posicao.posY = ultimoY + gap * (i + 1);	            	
-	            	celulas[celulaBase.id] = new Celula(ultimoX, posicao.posY, tamanho);
-	    	        layeredPane.add(celulas[celulaBase.id],  Integer.valueOf(1));	    	        
-	    	        celulaBase.id++;
+	    			posicao.setPosY(ultimoY + gap * (i + 1));	            	
+	            	celulas[indexBase] = new CelulaView(ultimoX, posicao.getPosY(), tamanho, tamanho);
+	    	        layeredPane.add(celulas[indexBase],  Integer.valueOf(1));	    	        
+	    	        indexBase++;
 	    		}
 	    		
 	    		break;

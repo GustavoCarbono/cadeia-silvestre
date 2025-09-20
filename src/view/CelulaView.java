@@ -2,18 +2,27 @@ package view;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
+
+import partida.Celula;
 
 public class CelulaView extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	private Posicao posCelula;
+	private Celula celula;
 	private List<AnimalView> animais;
 	
-	public CelulaView() {
-		
+	public CelulaView(int posX, int posY, int width, int height, Celula celula) {
+		this.celula = celula;
+		posCelula = new Posicao(posX, posY);
+		animais = new ArrayList<>();
+		setBounds(posX, posY, width, height);
+        setBackground(new Color(0, 160, 0));
+        setOpaque(true);
 	}
 	public CelulaView(int posX, int posY, int width, int height) {
 		posCelula = new Posicao(posX, posY);
@@ -46,9 +55,9 @@ public class CelulaView extends JPanel {
 			for(int i = 0; i < animais.size(); i++) {
 				AnimalView animalUni = animais.get(i);
 				if (animalUni.getAnimal().getId() == id) { // pega o animal procurado
-					remove(animalUni);
-					animal.set(i, animal);
-					add(animal);
+					remove(animalUni.getLabel());
+					animais.set(i, animal);
+					add(animal.getLabel());
 					revalidate();
 	                repaint();
 	                return;
@@ -60,24 +69,33 @@ public class CelulaView extends JPanel {
 	}
 	
 	public void addAnimal(AnimalView animal) {
-		animais.add(animal);
-		add(animal);
-		revalidate();
-		repaint();
+		if (getAnimal(animal.getAnimal().getId()) == null) {
+			animais.add(animal);
+			add(animal.getLabel());
+			revalidate();
+			repaint();
+		}
 	}
 	
 	public void removeAnimal(int id) {
-		for(AnimalView animal : animais) {
-			if(animal.getAnimal().getId() == id) {
-				animais.remove(animal);
-				remove(animal);
-				revalidate();
-				repaint();
-			}
-		}
+		Iterator<AnimalView> iterator = animais.iterator();
+	    while(iterator.hasNext()) {
+	        AnimalView animal = iterator.next();
+	        if(animal.getAnimal().getId() == id) {
+	            iterator.remove(); // remove da lista
+	            remove(animal.getLabel()); // remove do painel
+	            revalidate();
+	            repaint();
+	            return;
+	        }
+	    }
 	}
 	
 	public void setPosCelula(Posicao posCelula) {
 		this.posCelula = posCelula;
+	}
+	
+	public Celula getCelula() {
+		return celula;
 	}
 }
