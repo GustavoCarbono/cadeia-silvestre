@@ -46,7 +46,7 @@ public class Aplicacao {
 				partida.aumentarTurnoAtual();
 				partida.mudarOrdemJogador();
 				if(partida.getTurnoAtual()%8 == 0) {
-					//metodo que começa um minijogo
+					minijogo.comecaMinijogo();
 				}
 			} else {
 				//quando acaba partida

@@ -17,21 +17,6 @@ CREATE TABLE tbPredacao (
     FOREIGN KEY (nomePresa) REFERENCES tbAnimais(nomeAnimal)
 );
 
-CREATE TABLE tbComportamento (
-	idComportamento INT PRIMARY KEY AUTO_INCREMENT,
-    comportamento VARCHAR(100) NOT NULL -- Objeto String
-);
-
-CREATE TABLE tbComportamentoAnimal (
-	idComportamento_Animal INT PRIMARY KEY AUTO_INCREMENT,
-    nomeAnimal VARCHAR(30) NOT NULL,
-    nomeAlvo VARCHAR(30) NOT NULL,
-    idComportamento INT NOT NULL,
-    FOREIGN KEY (nomeAnimal) REFERENCES tbAnimais(nomeAnimal),
-    FOREIGN KEY (nomeAlvo) REFERENCES tbAnimais(nomeAnimal),
-    FOREIGN KEY (idComportamento) REFERENCES tbComportamento(idComportamento)
-);
-
 SELECT * FROM tbAnimais;
 SELECT * FROM tbPredacao;
 SELECT * FROM tbComportamento;

@@ -13,7 +13,7 @@ public class Pesca extends JFrame implements Jogo, KeyListener {
 	
 	@Override
 	public void comecar() {
-		
+		//faz interface de Pesca
 	}
 	
 	@Override
