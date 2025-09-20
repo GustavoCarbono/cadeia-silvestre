@@ -1,5 +1,7 @@
 package partida;
 
+import javax.swing.JLabel;
+
 public class Animal {
 	private int id;
 	private String nome;
@@ -8,6 +10,7 @@ public class Animal {
 	private int totalPontos;
 	private int pontosEvoluir;
 	private int x;
+	public JLabel img;
 	
 	public Animal(int id, String nome, String evolucao, int x) {
 		this.id = id;
@@ -16,7 +19,7 @@ public class Animal {
 		this.x = x;
 	}
 	
-	public Animal(int id, String nome, String evolucao, int pontosEvoluir, String dono) {
+	public Animal(int id, String nome, String evolucao, int pontosEvoluir, String dono, JLabel img) {
 		this.id = id;
 		this.nome = nome;
 		this.dono = dono;
@@ -24,6 +27,7 @@ public class Animal {
 		totalPontos = 0;
 		this.pontosEvoluir = pontosEvoluir;
 		this.x = 0;
+		this.img = img;
 	}
 
 	public String getNome() {

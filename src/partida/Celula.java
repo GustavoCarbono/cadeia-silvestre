@@ -1,15 +1,30 @@
 package partida;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Celula {
+import javax.swing.JPanel;
+
+public class Celula extends JPanel {
 	public int x;
 	private List<Animal> animais;
+	public int id;
+
 	
 	public Celula(int x) {
 		this.x = x;
 		this.animais = new ArrayList<>();
+	}
+	
+	//criacao de celulas na interface
+	public Celula(int posX, int posY, int tamanho) {
+		setBounds(posX, posY, tamanho, tamanho);
+        setBackground(new Color(0, 160, 0));
+        setOpaque(true);
+
+        this.animais = new ArrayList<>();
 	}
 	
 	public Animal getAnimal(int id) {
@@ -26,6 +41,7 @@ public class Celula {
 			return null;
 		}
 	}
+	
 	
 	public List<Animal> getAnimais() {
 		return animais;				//retorna todos os animais
