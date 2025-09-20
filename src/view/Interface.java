@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import partida.Jogador;
 import partida.Tabuleiro;
+import utils.RolarDados;
 
 public class Interface extends JFrame {
     
@@ -18,15 +19,11 @@ public class Interface extends JFrame {
     private CelulaView[] celulas;
 	private int indexBase = 0;
 	private JLayeredPane layeredPane = new JLayeredPane();
-	private int CelulaLargura;
-	private int CelulaAltura;
+	private RolarDados rolarDados;
     
     public Interface(List<Jogador> jogadores, int x, Tabuleiro tabuleiro) {
     	
     	celulas = new CelulaView[x];
-
-    	CelulaLargura = 115;
-    	CelulaAltura = 115;
     	
     	configurarJanela();
     	if(!(jogadores.size()>1&&jogadores.size()<5)) return;
@@ -45,8 +42,12 @@ public class Interface extends JFrame {
     	
         criarTabuleiro();
 
-        JButton btn = new JButton("Rolar Dado (agora não funcional)");
-		//btn.addActionListener(e -> );
+        JButton btn = new JButton("Rolar Dado (agora funcional)");
+		btn.addActionListener(e -> {
+			if(rolarDados != null) {
+				rolarDados.rolarDados();
+			}
+		});
 		btn.setBounds(1200, 100, 300, 50);
 		btn.setBackground(new Color(100, 100, 100));
 		btn.setOpaque(true);
@@ -72,6 +73,10 @@ public class Interface extends JFrame {
     	layeredPane.setLayout(null); 
     	add(layeredPane);
 	}
+    
+    public void setRolarDados(RolarDados dados) {
+    	this.rolarDados = dados;
+    }
 
     public void atualizarAnimalNaTela(AnimalView animal, int antigaPos, int novaPos) {
 		//pega a celula que foi retornada do mov.mover

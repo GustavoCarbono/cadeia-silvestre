@@ -40,14 +40,17 @@ public class Aplicacao {
 		Movimentacao mov = new Movimentacao();
 		Partida partida = new Partida(26, jogadores, xAlt, comecos, fins);
 		Interface gui = new Interface(partida.getOrdemJogador(), 26, partida.getTabuleiro());
-		do {
-			// animação de dado
-			mov.mover(partida.getOrdemJogador().get(0), partida, dao, gui);//número do dado dentro desse método
-			partida.aumentarTurnoAtual();
-			partida.mudarOrdemJogador();
-			if(partida.getTurnoAtual()%8 == 0) {
-				//metodo que começa um minijogo
+		gui.setRolarDados(() -> {
+			if(!partida.getFinalizou()) {
+				mov.mover(partida.getOrdemJogador().get(0), partida, dao, gui);//número do dado dentro desse método
+				partida.aumentarTurnoAtual();
+				partida.mudarOrdemJogador();
+				if(partida.getTurnoAtual()%8 == 0) {
+					//metodo que começa um minijogo
+				}
+			} else {
+				//quando acaba partida
 			}
-		} while (!partida.getFinalizou() && partida.getTurnoAtual() < 80);
+		});
 	}
 }
