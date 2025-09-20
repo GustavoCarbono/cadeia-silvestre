@@ -24,6 +24,7 @@ public class Partida {
 			ordemJogador = new ArrayList<>(this.jogadores);
 		} else {
 			System.out.println("quantidade de jogadores inválida");
+			finalizou = true;
 		}
 	}
 	

@@ -71,8 +71,7 @@ public class Celula {
 		if (!animais.isEmpty()) { 	// ver se tem animais na casa
 			for(Animal animalUni : animais) {
 				if (animalUni.getId() == id) { // pega o animal procurado
-					animalUni.setNome(animal.getNome());
-					animalUni.setEvolucao(animal.getEvolucao());
+					animalUni = animal;
 				}
 			}
 		} else {

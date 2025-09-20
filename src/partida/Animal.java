@@ -1,5 +1,7 @@
 package partida;
 
+import javax.swing.JLabel;
+
 public class Animal {
 	private int id;
 	private String nome;
@@ -8,6 +10,7 @@ public class Animal {
 	private int totalPontos;
 	private int pontosEvoluir;
 	private int x;
+	private String img;
 	private int caminho;//0 = caminho principal, resto igual outros caminho
 	
 	public Animal(int id, String nome, String evolucao, int x) {
@@ -17,7 +20,7 @@ public class Animal {
 		this.x = x;
 	}
 	
-	public Animal(int id, String nome, String evolucao, int pontosEvoluir, String dono) {
+	public Animal(int id, String nome, String evolucao, int pontosEvoluir, String dono, String img) {
 		this.id = id;
 		this.nome = nome;
 		this.dono = dono;
@@ -25,6 +28,7 @@ public class Animal {
 		this.totalPontos = 0;
 		this.pontosEvoluir = pontosEvoluir;
 		this.x = 0;
+		this.img = img;
 		this.caminho = 0;
 	}
 
@@ -83,6 +87,8 @@ public class Animal {
 	public void setCaminho(int caminho) {
 		this.caminho = caminho;
 	}
-	
-	
+
+	public String getImg() {
+		return img;
+	}
 }

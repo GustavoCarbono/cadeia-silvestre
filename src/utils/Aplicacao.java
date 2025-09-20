@@ -3,6 +3,7 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import minijogo.Minijogo;
 import model.DAO;
 import partida.Animal;
 import partida.Jogador;
@@ -13,7 +14,7 @@ public class Aplicacao {
 	public static void main(String[] args) {
 		DAO dao = new DAO();
 		dao.conectar();
-		Interface gui = new Interface();
+		Minijogo minijogo = new Minijogo();
 		//Escolher animais e nomes dos jogadores
 		
 		//----------------------------------------
@@ -30,14 +31,15 @@ public class Aplicacao {
 		
 		// temporario
 		List<Jogador> jogadores = new ArrayList<>();
-		jogadores.add(new Jogador("p1", new Animal(1, "macaco", "gorila", 20, "p1")));
-		jogadores.add(new Jogador("p2", new Animal(2, "ema", "avestruz", 20, "p2")));
-		jogadores.add(new Jogador("p3", new Animal(3, "puma", "leão", 20, "p3")));
-		jogadores.add(new Jogador("p4", new Animal(4, "elefante-pigmeu-de-Bornéu", "elefante africano", 20, "p4")));
+		jogadores.add(new Jogador("p1", new Animal(1, "macaco", "gorila", 20, "p1", "images/AnimaisPrincipais/Elefante.png")));
+		jogadores.add(new Jogador("p2", new Animal(2, "ema", "avestruz", 20, "p2", "images/AnimaisPrincipais/ema.png")));
+		jogadores.add(new Jogador("p3", new Animal(3, "puma", "leão", 20, "p3", "images/AnimaisPrincipais/monkey.png")));
+		jogadores.add(new Jogador("p4", new Animal(4, "elefante-pigmeu-de-Bornéu", "elefante africano", 20, "p4", "images/AnimaisPrincipais/puma.png")));
 		//----------------------------------------
 		
 		Movimentacao mov = new Movimentacao();
 		Partida partida = new Partida(20, jogadores, xAlt, comecos, fins);
+		Interface gui = new Interface(partida.getOrdemJogador(), 20);
 		do {
 			// animação de dado
 			mov.mover(partida.getOrdemJogador().get(0), partida, dao, gui);//número do dado dentro desse método

@@ -1,91 +1,114 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.SwingUtilities;
+
+import partida.Animal;
+import partida.Celula;
+import partida.Jogador;
 
 public class Interface extends JFrame {
     
-	private JLayeredPane layeredPane;
-
     private Posicao posicao = new Posicao();
-    private CelulaView celulaBase = new CelulaView();
-	private CelulaView celulas[];
-
+    private CelulaView[] celulas;
+	private CelulaView celulaBase = new Celula();
+	private JLayeredPane layeredPane = new JLayeredPane();
+	private int CelulaLargura;
+	private int CelulaAltura;
     
-    // ComboBox para curso
-    
-    // CheckBoxes para matérias
-    
-    public Interface() {
+    public Interface(List<Jogador> jogadores, int x) {
     	
+    	 celulas = new CelulaView[x];
     	
-        // Configurações da janela
-    	setExtendedState(JFrame.MAXIMIZED_BOTH);
-    	setTitle("Pergunta 1");
-        setSize(400,500);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setLayout(null);
-        getContentPane().setBackground(new Color(92, 64, 51));
-       
-        layeredPane = new JLayeredPane();
-    	layeredPane.setBounds(0, 0, 1920, 1080);
-    	layeredPane.setLayout(null); // absolute positioning
-    	getContentPane().add(layeredPane);
+    	CelulaLargura = 115;
+    	CelulaAltura = 115;
     	
-        celulas = new CelulaView[70];
-        
-        celulaBase.posCelula = 1;
+    	configurarJanela();
+    	if(!(jogadores.size()>1&&jogadores.size()<5)) return;
+    	List<AnimalView> animalJogador = new ArrayList<>();
+    	int[][] offset = new int[][] {
+    		{10, 10},
+    		{10, 50},
+    		{50, 10},
+    		{50, 50}
+    	};
+    	int i = 0;
+    	for(Jogador jogador : jogadores) {
+    		
+    	}
+    	
+        celulas = new CelulaView[26];
         
         criarTabuleiro();
-        
-        ImageIcon macacoOG = new ImageIcon(getClass().getResource("/images/monkey.png"));
-        Image macacoT = macacoOG.getImage().getScaledInstance(40, 30, Image.SCALE_SMOOTH);
-        ImageIcon macaco = new ImageIcon(macacoT);
-        JLabel macacoLabel = new JLabel(macaco);
-   
-        ImageIcon emaOG = new ImageIcon(getClass().getResource("/images/ema.png"));
-        Image emaT = emaOG.getImage().getScaledInstance(40, 30, Image.SCALE_SMOOTH);
-        ImageIcon ema = new ImageIcon(emaT);
-        JLabel emaLabel = new JLabel(ema);
 
-        
+        JButton btn = new JButton("Rolar Dado (agora funcional)");
+		btn.addActionListener(e -> );
+		btn.setBounds(1200, 100, 300, 50);
+		btn.setBackground(new Color(100, 100, 100));
+		btn.setOpaque(true);
+		layeredPane.add(btn);
         
         adicionarAnimalACasa(macacoLabel, 0);
         
         adicionarAnimalACasa(emaLabel, 0);
 
-        
-        setVisible(true); 
-        
+        setVisible(true);
         
     }
     
-  
-    public void adicionarAnimalACasa(JLabel animal, int idCasa) {
-    	
-    	if(celulas[idCasa].numAnimaisNaCasa <= 0) {
-    		animal.setBounds(celulas[idCasa].getX(), celulas[idCasa].getY(), 40, 30);
-    	}
-    	else if(celulas[idCasa].numAnimaisNaCasa == 1) {
-    		animal.setBounds((celulas[idCasa].getX() + 40), celulas[idCasa].getY(), 40, 30);
-    	}
-    	else if(celulas[idCasa].numAnimaisNaCasa == 2) {
-    		animal.setBounds(celulas[idCasa].getX(), celulas[idCasa].getY() + 40, 40, 30);
-    	}
-    	else if(celulas[idCasa].numAnimaisNaCasa == 3) {
-    		animal.setBounds(celulas[idCasa].getX() + 40, celulas[idCasa].getY() + 40, 40, 30);
-    	}
-    	else {
-    		System.out.println("Erro");
-    	}
-    	
-		layeredPane.add(animal, Integer.valueOf(2));
-		System.out.println(celulas[idCasa].numAnimaisNaCasa);
-		celulas[idCasa].numAnimaisNaCasa++;
-		System.out.println(celulas[idCasa].numAnimaisNaCasa);
-    }
+    public void configurarJanela() {
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+    	setTitle("Pergunta 1");
+        setSize(1920,1080);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(true);
+        setLayout(null);
+        getContentPane().setBackground(new Color(74, 42, 18));
+        
+        setVisible(true);
+
+    	layeredPane.setBounds(0, 0, 1920, 1080);
+    	layeredPane.setLayout(null); 
+    	add(layeredPane);
+	}
+
+    public void atualizarAnimalNaTela(AnimalView animal, int antigaPos, int novaPos) {
+		//pega a celula que foi retornada do mov.mover
+		CelulaView oldCell = celulas[antigaPos + 1];
+		
+		//remove a imagem da celula
+		oldCell.remove(animal); 
+		
+		//mesmo do de baixo
+		oldCell.revalidate();
+		
+		//repainta o quadrado pra atualizar agora que foi removido o bicho
+		oldCell.repaint();		
+		
+		//isso reseta o cache do java pra imagem não continuar viva depois do repaint
+		SwingUtilities.updateComponentTreeUI(layeredPane);
+	
+
+
+		 CelulaView newCell = celulas[novaPos + 1];
+		 newCell.add(animal.img); 
+		 
+		 newCell.revalidate();
+		 newCell.repaint();
+	
+		 SwingUtilities.updateComponentTreeUI(layeredPane);
+	    
+	}
     
     public void criarTabuleiro() {
     	posicao.posX = 250;
@@ -106,86 +129,63 @@ public class Interface extends JFrame {
     	criarCelulas(1, posicao.posX, posicao.posY, "D");
     	
     }
-    
 
-    public Posicao criarCelulas(int qtdCelulas, int ultimoX, int ultimoY, String direcao) {
+public void criarCelulas(int qtdCelulas, int ultimoX, int ultimoY, String direcao) {
     	
-    	int gap =116;
-    	int largura = 115;
-    	int altura = 115;
+    	int gap = 111;
+    	int tamanho = 110;
     	
     	switch(direcao) {
     	
 	    	case "D":
-	    		for(int i = 0; i < qtdCelulas; i++) {
+	    		for(int i = 0; i < qtdCelulas; i++) {            	
+	    			//essa classe de posição é pra poder usar ela no codigo todo com um valor mais flexivel
+	            	posicao.posX = ultimoX + gap * (i + 1);	            	
 	            	
-	            	posicao.posX = ultimoX + gap * (i + 1);
+	            	//celulabase.id é so pra usar como numerador de 0 a 25 pras celulas
+	            	celulas[celulaBase.id] = new Celula(posicao.posX, ultimoY, tamanho);
 	            	
-	            	celulas[celulaBase.posCelula] = new CelulaView(posicao.posX, ultimoY, altura, largura);
-	    	        	        
-	    	        layeredPane.add(celulas[celulaBase.posCelula],  Integer.valueOf(1));
-	    	        celulaBase.posCelula++;
-	            
+	            	//layeredpane bota as imagem em cima dos label
+	    	        layeredPane.add(celulas[celulaBase.id],  Integer.valueOf(1));	    	        
+	    	        celulaBase.id++;
 	        	}
 	    		
 	    		break;
 	    		
 	    	case "E":
 	    		for(int i = 0; i < qtdCelulas; i++) {
-	            	posicao.posX = ultimoX - gap * (i + 1);
-	            	celulas[celulaBase.posCelula] = new CelulaView(posicao.posX, ultimoY, altura, largura);
-	    	           
-	    	        layeredPane.add(celulas[celulaBase.posCelula],  Integer.valueOf(1));
-	    	        celulaBase.posCelula++;
-	            
+	    	        posicao.posX = ultimoX - gap * (i + 1);
+	            	celulas[celulaBase.id] = new Celula(posicao.posX, ultimoY, tamanho);
+	    	        layeredPane.add(celulas[celulaBase.id],  Integer.valueOf(1));
+	    	        celulaBase.id++;     
 	        	}
+	    		
 	    		break;
 	    		
 	    	case "C":
-	    		for(int i = 0; i < qtdCelulas; i++) {
-	            	posicao.posY = ultimoY - gap * (i + 1);
-
-	    	        celulas[celulaBase.posCelula] = new CelulaView(ultimoX, posicao.posY, altura, largura);
-	    	        
-	    	        layeredPane.add(celulas[celulaBase.posCelula],  Integer.valueOf(1));
-	    	        celulaBase.posCelula++;
-	            
+	    		for(int i = 0; i < qtdCelulas; i++) { 
+	    	        posicao.posY = ultimoY - gap * (i + 1);
+	            	celulas[celulaBase.id] = new Celula(ultimoX, posicao.posY, tamanho);
+	    	        layeredPane.add(celulas[celulaBase.id],  Integer.valueOf(1));	    	        
+	    	        celulaBase.id++;
 	        	}
+	    		
 	    		break;
 	    		
 	    	case "B":
 	    		for(int i = 0; i < qtdCelulas; i++) {
-	    			posicao.posY = ultimoY + gap * (i + 1);
-	    			
-	    	        celulas[celulaBase.posCelula] = new CelulaView(ultimoX, posicao.posY, altura, largura);
-	    	 
-	    	        layeredPane.add(celulas[celulaBase.posCelula],  Integer.valueOf(1));
-	           
-	    	        celulaBase.posCelula++;
+	    			posicao.posY = ultimoY + gap * (i + 1);	            	
+	            	celulas[celulaBase.id] = new Celula(ultimoX, posicao.posY, tamanho);
+	    	        layeredPane.add(celulas[celulaBase.id],  Integer.valueOf(1));	    	        
+	    	        celulaBase.id++;
 	    		}
-	    		break;
 	    		
-	    	case "I":
-    	        celulas[0] = new CelulaView();
-    	        celulas[0].setBackground(new Color(150, 230, 150));	        
-    	        celulas[0].setOpaque(true);
-    	        celulas[0].setBounds(ultimoX, posicao.posY ,altura, largura);
-    	        
-    	        
-    	        layeredPane.add(celulas[0],  Integer.valueOf(1));
+	    		break;
 	    		
     	}
     	
-    	return posicao;
 	}
     
-
-
-	
-    public static void main(String[] args) {
-		Interface gui = new Interface();
-	}
-
 }
 
 

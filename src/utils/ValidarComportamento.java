@@ -21,16 +21,9 @@ public class ValidarComportamento {
 		List<ComportamentoDAO> comportamentos = dao.buscarComportamento(animal.getNome());
 		List<PredacaoDAO> predacao = dao.buscarPresa(animal.getNome());
 		
-		Comportamento comportar = new Comportamento();
+		Predacao comportar = new Predacao();
 		
 		for(Animal animalUni : animais) {//animal isolado
-			if (comportamentos != null) {
-				for(ComportamentoDAO comportamento : comportamentos) {
-					if(comportamento.getNomeAlvo().equals(animalUni.getNome())) {
-						comportar.comportar(animal, animalUni, comportamento.getComportamento(), partida, gui);
-					}
-				}
-			}
 			if (predacao != null) {
 				if(animalUni.getDono() != null) {//não tem predação com animais de outros jogadores
 					for(PredacaoDAO predacaoUni : predacao) {//verifica se animal alvo é presa
