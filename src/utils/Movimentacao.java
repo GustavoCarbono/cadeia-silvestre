@@ -2,6 +2,8 @@ package utils;
 
 import java.util.Random;
 
+import javax.swing.Timer;
+
 import model.DAO;
 import partida.Animal;
 import partida.Caminho;
@@ -27,6 +29,8 @@ public class Movimentacao {
 				? tabuleiro.getGridMain(animal.getX()) 
 				: tabuleiro.getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
 		
+		gui.bloquearBotao();
+		
 		if(celula.getOutroCaminho()) {
 			boolean entrar = false;//método que ver se ele quer entrar
 			if(entrar) {// se o jogador escolheu sim ou não ir para outro caminho
@@ -37,81 +41,94 @@ public class Movimentacao {
 				numRdm--;
 			}
 		}
-		int passos = numRdm;		
-		while(passos>0) {
-			int pos = animal.getX();
-			int caminho = animal.getCaminho();
-			
-			celula = (caminho == 0) 
-					? tabuleiro.getGridMain(pos) 
-					: tabuleiro.getCelAlternativo(pos, (caminho-1));
-			
-			boolean entrar = false;//método que ver se ele quer entrar
-			if(celula.getOutroCaminho()) {
-				Celula caminhoAlt = celula.getCaminhoAlternativo();
-				if(entrar) {
-					entrarCaminhoAlternativo(animal, celula, caminhoAlt);
-					
-					gui.pegarCelulaView(animal, celula, caminhoAlt);
-					passos--;
-				}
-			}
-			Caminho celulaAlt = null;
-			if (caminho != 0) {
-				celulaAlt = tabuleiro.getGridAlternativo(celula.getCaminhoId());
-			}
-			
-			Celula ultimaPos;
-			if (caminho == 0) { //pega a ultima posicao do caminho principal ou alternativo
-				 ultimaPos = tabuleiro.getGridMain(tabuleiro.getGridMainCount()-1);
-			} else { 
-				ultimaPos = celulaAlt.getCelula(
-						celulaAlt.getCelulaCount()-1);
-			}
-			
-			int count;
-			if (caminho == 0) { //pega a ultima posicao do caminho principal ou alternativo
-				 count = tabuleiro.getGridMainCount();
-			} else { 
-				count = celulaAlt.getCelulaCount();
-			}
-			
-			if (celula.getX() == ultimaPos.getX() && !entrar) {
-				if (celula.getCaminhoId() == 0) {
-					celula.removeAnimal(animal.getId());// remove o animal do quadrado
-					animal.setX(pos-count+1);//atualiza o dado da posicao do animal
-					System.out.println("o animal "+animal.getNome()+" deu uma volta");
-					// coloca o animal no novo quadrado
-					tabuleiro.getGridMain(0).addAnimal(animal);
-					evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao, gui);//adiciona metade do total de pontos da evolução
-					
-					gui.pegarCelulaView(animal, celula, tabuleiro.getGridMain(0));
-					passos--;
-				} else {
-					sairCaminhoAlternativo(animal, celula, celulaAlt.getFim());
-					
-					gui.pegarCelulaView(animal, celula, celulaAlt.getFim());
-					passos--;
-				}
-			} else {
-				celula.removeAnimal(animal.getId());// remove o animal do quadrado
-				animal.setX(pos+1);//atualiza o dado da posicao do animal
-				// coloca o animal no novo quadrado
-				if(celula.getCaminhoId() == 0) {
-					tabuleiro.getGridMain(pos+1).addAnimal(animal);
-					
-					gui.pegarCelulaView(animal, celula, tabuleiro.getGridMain(pos+1));
-				} else {
-					celulaAlt.getCelula(pos+1).addAnimal(animal);
-					
-					gui.pegarCelulaView(animal, celula, celulaAlt.getCelula(pos+1));
-				}
-				passos--;
+		int passos[] = {numRdm};
+		
+		Timer timer = new Timer(500, null);
+	    timer.addActionListener(e -> {
+	        if (passos[0] <= 0) {
+	            ((Timer) e.getSource()).stop();
+	            
+				gui.desbloquearBotao();
+	            gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
+	            comportar.validarComportamento(animal, partida, dao, gui);
+	            return;
+	        }
+	        
+	        moverPasso(animal, evoluir, partida, dao, gui);
+	        passos[0]--;
+	    });
+
+	    timer.start();
+		return numRdm;
+	}
+	
+	public void moverPasso(Animal animal, Evoluir evoluir, Partida partida, DAO dao, Interface gui) {
+		int pos = animal.getX();
+		int caminho = animal.getCaminho();
+		Tabuleiro tabuleiro = partida.getTabuleiro();
+		
+		Celula celula = (caminho == 0) 
+				? tabuleiro.getGridMain(pos) 
+				: tabuleiro.getCelAlternativo(pos, (caminho-1));
+		
+		boolean entrar = false;//método que ver se ele quer entrar
+		if(celula.getOutroCaminho()) {
+			Celula caminhoAlt = celula.getCaminhoAlternativo();
+			if(entrar) {
+				entrarCaminhoAlternativo(animal, celula, caminhoAlt);
+				
+				gui.pegarCelulaView(animal, celula, caminhoAlt);
 			}
 		}
-		gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
-		comportar.validarComportamento(animal, partida, dao, gui);
-		return numRdm;
+		Caminho celulaAlt = null;
+		if (caminho != 0) {
+			celulaAlt = tabuleiro.getGridAlternativo(celula.getCaminhoId());
+		}
+		
+		Celula ultimaPos;
+		if (caminho == 0) { //pega a ultima posicao do caminho principal ou alternativo
+			 ultimaPos = tabuleiro.getGridMain(tabuleiro.getGridMainCount()-1);
+		} else { 
+			ultimaPos = celulaAlt.getCelula(
+					celulaAlt.getCelulaCount()-1);
+		}
+		
+		int count;
+		if (caminho == 0) { //pega a ultima posicao do caminho principal ou alternativo
+			 count = tabuleiro.getGridMainCount();
+		} else { 
+			count = celulaAlt.getCelulaCount();
+		}
+		
+		if (celula.getX() == ultimaPos.getX() && !entrar) {
+			if (celula.getCaminhoId() == 0) {
+				celula.removeAnimal(animal.getId());// remove o animal do quadrado
+				animal.setX(pos-count+1);//atualiza o dado da posicao do animal
+				System.out.println("o animal "+animal.getNome()+" deu uma volta");
+				// coloca o animal no novo quadrado
+				tabuleiro.getGridMain(0).addAnimal(animal);
+				evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao, gui);//adiciona metade do total de pontos da evolução
+				
+				gui.pegarCelulaView(animal, celula, tabuleiro.getGridMain(0));
+			} else {
+				sairCaminhoAlternativo(animal, celula, celulaAlt.getFim());
+				
+				gui.pegarCelulaView(animal, celula, celulaAlt.getFim());
+			}
+		} else {
+			celula.removeAnimal(animal.getId());// remove o animal do quadrado
+			animal.setX(pos+1);//atualiza o dado da posicao do animal
+			// coloca o animal no novo quadrado
+			if(celula.getCaminhoId() == 0) {
+				tabuleiro.getGridMain(pos+1).addAnimal(animal);
+				
+				gui.pegarCelulaView(animal, celula, tabuleiro.getGridMain(pos+1));
+			} else {
+				celulaAlt.getCelula(pos+1).addAnimal(animal);
+				
+				gui.pegarCelulaView(animal, celula, celulaAlt.getCelula(pos+1));
+			}
+		}
 	}
 	
 	public void entrarCaminhoAlternativo(Animal animal, Celula celulaAntiga, Celula celulaNova) {

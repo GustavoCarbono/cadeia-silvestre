@@ -48,6 +48,7 @@ public class Interface extends JFrame {
     private JLabel[][] labelsJogadores = new JLabel[4][4]; 
     private JLabel numeroRodadoLabel;
     private JLabel jogadorAtualLabel;
+    private JButton btnDado;
     
     private Color[] coresJogadores = {
             new Color(255, 100, 100),
@@ -146,6 +147,7 @@ public class Interface extends JFrame {
     }
 
     public void atualizarAnimalNaTela(AnimalView animal, CelulaView antigaCel, CelulaView novaCel) {
+    
 		//remove a imagem da celula
 		antigaCel.removeAnimal(animal.getAnimal().getId()); 
 		
@@ -193,19 +195,27 @@ public class Interface extends JFrame {
         panel.add(infoJogo, gbc);
     }
     
+    public void bloquearBotao() {
+        btnDado.setEnabled(false);
+    }
+
+    public void desbloquearBotao() {
+        btnDado.setEnabled(true);
+    }
+    
     public void addInfoAcoes_subPanel(JPanel panel) {
         TitledBorder border = BorderFactory.createTitledBorder("Ações");
         border.setTitleFont(new Font("Arial", Font.BOLD, 21));
         acoesJogo.setBorder(border);
 
-        JButton btn = new JButton("Rolar Dado (agora funcional)");
+        btnDado = new JButton("Rolar Dado (agora funcional)");
         JButton sairJogo = new JButton("Sair");
         
         Font fonte = new Font("Arial", Font.BOLD, 15);
-        btn.setFont(fonte);
+        btnDado.setFont(fonte);
         sairJogo.setFont(fonte);
 
-        acoesJogo.add(btn);
+        acoesJogo.add(btnDado);
         acoesJogo.add(sairJogo);
         
         acoesJogo.setBackground(null);
@@ -215,7 +225,7 @@ public class Interface extends JFrame {
 
         gbc.fill = GridBagConstraints.BOTH;
         
-        btn.addActionListener(e -> {
+        btnDado.addActionListener(e -> {
 			if(rolarDados != null) {
 				rolarDados.rolarDados();
 			}
@@ -267,7 +277,6 @@ public class Interface extends JFrame {
     
     public void atualizarInfoJogador(List<Jogador> jogadoresOrdem, List<Jogador> jogadores) {
         for (int i = 0; i < jogadoresOrdem.size(); i++) {
-        	Jogador jogador = jogadoresOrdem.get(i);
         	Jogador jogadorFixo = jogadores.get(i);
          	labelsJogadores[i][1].setText("Animal: " + jogadorFixo.getAnimal().getNome());
             labelsJogadores[i][2].setText("Pontuação: " + jogadorFixo.getAnimal().getTotalPontos()+"/"+jogadorFixo.getAnimal().getPontosEvoluir());
