@@ -38,11 +38,12 @@ public class Aplicacao {
 		//----------------------------------------
 		
 		Movimentacao mov = new Movimentacao();
-		Partida partida = new Partida(26, jogadores, xAlt, comecos, fins);
-		Interface gui = new Interface(partida.getOrdemJogador(), 26, partida.getTabuleiro());
+		Partida partida = new Partida(28, jogadores, xAlt, comecos, fins);
+		Interface gui = new Interface(partida.getOrdemJogador(), 28, partida);
 		gui.setRolarDados(() -> {
 			if(!partida.getFinalizou()) {
-				mov.mover(partida.getOrdemJogador().get(0), partida, dao, gui);//número do dado dentro desse método
+				int dado = mov.mover(partida.getOrdemJogador().get(0), partida, dao, gui);//número do dado dentro desse método
+				//gui.seiLaOQue(dado) atualiza
 				partida.aumentarTurnoAtual();
 				partida.mudarOrdemJogador();
 				if(partida.getTurnoAtual()%8 == 0) {

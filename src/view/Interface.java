@@ -1,179 +1,363 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.TitledBorder;
 
+import partida.Animal;
+import partida.Celula;
 import partida.Jogador;
-import partida.Tabuleiro;
+import partida.Partida;
 import utils.RolarDados;
 
 public class Interface extends JFrame {
-    
-    private Posicao posicao;
+	
+	private static final long serialVersionUID = 1L;
+	
     private CelulaView[] celulas;
-	private int indexBase = 0;
 	private JLayeredPane layeredPane = new JLayeredPane();
 	private RolarDados rolarDados;
+	private List<AnimalView> animalJogador;
+	
+	private JPanel panel = new JPanel(new GridBagLayout());
+    private JPanel tabuleiro = new JPanel(new BorderLayout()); 
+    private JPanel subTabuleiro = new JPanel(null);  
+    private JPanel subPanel = new JPanel(new GridBagLayout());
+	
+	private JPanel infoJogo = new JPanel(new GridLayout(2, 1, 1, 10)); 
+    private JPanel acoesJogo = new JPanel(new GridLayout(2, 1, 1, 5));
+    private JPanel jogadoresPanel = new JPanel(new GridLayout(4, 1, 1, 10));
     
-    public Interface(List<Jogador> jogadores, int x, Tabuleiro tabuleiro) {
-    	
+    private JPanel[] infoJogadores = new JPanel[4];
+    private JLabel[][] labelsJogadores = new JLabel[4][4]; 
+    private JLabel numeroRodadoLabel;
+    private JLabel jogadorAtualLabel;
+    
+    private Color[] coresJogadores = {
+            new Color(255, 100, 100),
+            new Color(100, 255, 100),
+            new Color(100, 100, 255),
+            new Color(255, 255, 100)
+    };
+    
+    public Interface(List<Jogador> jogadores, int x, Partida partida) {
+    	configurarJanela();
     	celulas = new CelulaView[x];
     	
-    	configurarJanela();
-    	if(!(jogadores.size()>1&&jogadores.size()<5)) return;
-    	List<AnimalView> animalJogador = new ArrayList<>();
-    	int[][] offset = new int[][] {
-    		{10, 10},
-    		{10, 50},
-    		{50, 10},
-    		{50, 50}
-    	};
-    	int i = 0;
-    	for(Jogador jogador : jogadores) {
-    		animalJogador.add(new AnimalView(jogador.getAnimal(), 40, 40, offset[i][0], offset[i][1]));
-    		i++;
-    	}
+    	tabuleiro.setBackground(new Color(74, 42, 18));
+        tabuleiro.setPreferredSize(new Dimension((int) (getHeight() * 1.35), getHeight()));
+        add(tabuleiro, BorderLayout.WEST);
     	
-        criarTabuleiro();
+    	panel.setBackground(new Color(255, 255, 255));
+        add(panel, BorderLayout.CENTER);
+        
+        atualizarInterface();
+        
+        subPanel.setPreferredSize(new Dimension((int) (panel.getWidth() * 0.99), (int) (panel.getHeight() * 0.99)));
+        subPanel.setBackground(null);
+        panel.add(subPanel);
+        
+        subTabuleiro.setPreferredSize(new Dimension((int) (getHeight() * 1.35), getHeight()));
+        subTabuleiro.setBackground(new Color(74, 42, 18));
+        tabuleiro.add(subTabuleiro , BorderLayout.CENTER);
+        
+        atualizarInterface();
+        
+        preencherTabuleiro(subTabuleiro, partida);
+        
+        addInfoJogo_subPanel(subPanel, partida);
+        addInfoAcoes_subPanel(subPanel);
+        addInfoJogadores_subPanel(subPanel, partida);
+        
+        atualizarInterface();
+    	
+    	if(!(jogadores.size()>1&&jogadores.size()<5)) return;
+    	animalJogador = new ArrayList<>();
+    	for(Jogador jogador : jogadores) {
+    		animalJogador.add(new AnimalView(jogador.getAnimal(), 40, 40));
+    	}
 
-        JButton btn = new JButton("Rolar Dado (agora funcional)");
-		btn.addActionListener(e -> {
-			if(rolarDados != null) {
-				rolarDados.rolarDados();
-			}
-		});
-		btn.setBounds(1200, 100, 300, 50);
-		btn.setBackground(new Color(100, 100, 100));
-		btn.setOpaque(true);
-		layeredPane.add(btn);
+        //criarTabuleiro(partida.getTabuleiro());
 
-        setVisible(true);
+        for(int i=0; i<animalJogador.size(); i++) {
+        	celulas[0].addAnimal(animalJogador.get(i));
+    	}
         
     }
     
     public void configurarJanela() {
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-    	setTitle("Pergunta 1");
-        setSize(1920,1080);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(true);
-        setLayout(null);
-        getContentPane().setBackground(new Color(74, 42, 18));
-        
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setLayout(new BorderLayout());
+        setBackground(Color.BLACK);
         setVisible(true);
-
-    	layeredPane.setBounds(0, 0, 1920, 1080);
-    	layeredPane.setLayout(null); 
-    	add(layeredPane);
 	}
+    
+    public void atualizarInterface() {
+        validate();
+        repaint();
+        revalidate();
+    }
     
     public void setRolarDados(RolarDados dados) {
     	this.rolarDados = dados;
     }
+    
+    public void pegarCelulaView(Animal animal, Celula antigaCelula, Celula novaCelula) {
 
-    public void atualizarAnimalNaTela(AnimalView animal, int antigaPos, int novaPos) {
-		//pega a celula que foi retornada do mov.mover
-		CelulaView oldCell = celulas[antigaPos + 1];
-		
+    	CelulaView antigaCel=null, novaCel=null;
+    	AnimalView animalView=null;
+
+    	for(int i=0;i>=0&& i<celulas.length; i++) {
+    		if(celulas[i].getCelula().getCaminhoId() == antigaCelula.getCaminhoId()
+    			&& celulas[i].getCelula().getX() == antigaCelula.getX()) {
+    			antigaCel = celulas[i];
+    		}
+    		if(celulas[i].getCelula().getCaminhoId() == novaCelula.getCaminhoId()
+        			&& celulas[i].getCelula().getX() == novaCelula.getX()) {
+    			novaCel = celulas[i];
+        	}
+    	}
+    	
+    	for(int i=0; animalJogador.size()>i;i++) {
+    		if(animalJogador.get(i).getAnimal().getId() == animal.getId()) {
+    			animalView = animalJogador.get(i);
+    		}
+    	}
+    	if(antigaCel==null || novaCel==null || animalView==null) {System.out.println("não deu certo"); return;}
+    	
+    	atualizarAnimalNaTela(animalView, antigaCel, novaCel);
+    }
+
+    public void atualizarAnimalNaTela(AnimalView animal, CelulaView antigaCel, CelulaView novaCel) {
 		//remove a imagem da celula
-		oldCell.removeAnimal(animal.getAnimal().getId()); 
+		antigaCel.removeAnimal(animal.getAnimal().getId()); 
 		
 		//mesmo do de baixo
-		oldCell.revalidate();
+		novaCel.revalidate();
 		
 		//repainta o quadrado pra atualizar agora que foi removido o bicho
-		oldCell.repaint();		
+		antigaCel.repaint();		
 		
 		//isso reseta o cache do java pra imagem não continuar viva depois do repaint
 		SwingUtilities.updateComponentTreeUI(layeredPane);
-	
 
-
-		 CelulaView newCell = celulas[novaPos + 1];
-		 newCell.add(animal.getLabel()); 
-		 
-		 newCell.revalidate();
-		 newCell.repaint();
-	
-		 SwingUtilities.updateComponentTreeUI(layeredPane);
+		CelulaView newCell = novaCel;
+		newCell.add(animal.getLabel()); 
+		
+		newCell.revalidate();
+		newCell.repaint();
+		SwingUtilities.updateComponentTreeUI(layeredPane);
 	    
 	}
     
-    public void criarTabuleiro() {
-    	posicao = new Posicao(250, 730);
-    	
-    	indexBase = 1;
-    	
-    	criarCelulas(7, posicao.getPosX(), posicao.getPosY(), "C");
-    	criarCelulas(6, posicao.getPosX(), posicao.getPosY(), "D");
-    	criarCelulas(6, posicao.getPosX(), posicao.getPosY(), "B");
-    	criarCelulas(5, posicao.getPosX(), posicao.getPosY(), "E");
-    	
-    }
+    public void addInfoJogo_subPanel(JPanel panel, Partida partida) {
+        infoJogo.setBackground(null);
 
-public void criarCelulas(int qtdCelulas, int ultimoX, int ultimoY, String direcao) {
-    	
-    	int gap = 101;
-    	int tamanho = 100;
-    	
-    	switch(direcao) {
-    	
-	    	case "D":
-	    		for(int i = 0; i < qtdCelulas; i++) {            	
-	    			//essa classe de posição é pra poder usar ela no codigo todo com um valor mais flexivel
-	            	posicao.setPosX(ultimoX + gap * (i + 1));            	
-	            	
-	            	//celulabase.id é so pra usar como numerador de 0 a 25 pras celulas
-	            	celulas[indexBase] = new CelulaView(posicao.getPosX(), ultimoY, tamanho, tamanho);
-	            	
-	            	//layeredpane bota as imagem em cima dos label
-	    	        layeredPane.add(celulas[indexBase],  Integer.valueOf(1));	    	        
-	    	        indexBase++;
-	        	}
-	    		
-	    		break;
-	    		
-	    	case "E":
-	    		for(int i = 0; i < qtdCelulas; i++) {
-	    			posicao.setPosX(ultimoX - gap * (i + 1));
-	            	celulas[indexBase] = new CelulaView(posicao.getPosX(), ultimoY, tamanho, tamanho);
-	    	        layeredPane.add(celulas[indexBase],  Integer.valueOf(1));
-	    	        indexBase++;     
-	        	}
-	    		
-	    		break;
-	    		
-	    	case "C":
-	    		for(int i = 0; i < qtdCelulas; i++) { 
-	    			posicao.setPosY(ultimoY - gap * (i + 1));
-	            	celulas[indexBase] = new CelulaView(ultimoX, posicao.getPosY(), tamanho, tamanho);
-	    	        layeredPane.add(celulas[indexBase],  Integer.valueOf(1));	    	        
-	    	        indexBase++;
-	        	}
-	    		
-	    		break;
-	    		
-	    	case "B":
-	    		for(int i = 0; i < qtdCelulas; i++) {
-	    			posicao.setPosY(ultimoY + gap * (i + 1));	            	
-	            	celulas[indexBase] = new CelulaView(ultimoX, posicao.getPosY(), tamanho, tamanho);
-	    	        layeredPane.add(celulas[indexBase],  Integer.valueOf(1));	    	        
-	    	        indexBase++;
-	    		}
-	    		
-	    		break;
-	    		
-    	}
-    	
-	}
+        TitledBorder border = BorderFactory.createTitledBorder("Informações");
+        border.setTitleFont(new Font("Arial", Font.BOLD, 21));
+        infoJogo.setBorder(border);
+
+        numeroRodadoLabel = new JLabel("Início de Jogo", SwingConstants.CENTER);
+        jogadorAtualLabel = new JLabel("Jogador atual: " + partida.getOrdemJogador().get(0).getJogador(), SwingConstants.CENTER);
+
+        Font fonte = new Font("Arial", Font.BOLD, 17);
+        numeroRodadoLabel.setFont(fonte);
+        jogadorAtualLabel.setFont(fonte);
+
+        infoJogo.add(numeroRodadoLabel);
+        infoJogo.add(jogadorAtualLabel);
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.1;
+        gbc.fill = GridBagConstraints.BOTH;
+        
+        panel.add(infoJogo, gbc);
+    }
+    
+    public void addInfoAcoes_subPanel(JPanel panel) {
+        TitledBorder border = BorderFactory.createTitledBorder("Ações");
+        border.setTitleFont(new Font("Arial", Font.BOLD, 21));
+        acoesJogo.setBorder(border);
+
+        JButton btn = new JButton("Rolar Dado (agora funcional)");
+        JButton sairJogo = new JButton("Sair");
+        
+        Font fonte = new Font("Arial", Font.BOLD, 15);
+        btn.setFont(fonte);
+        sairJogo.setFont(fonte);
+
+        acoesJogo.add(btn);
+        acoesJogo.add(sairJogo);
+        
+        acoesJogo.setBackground(null);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridy = 1;
+        gbc.weighty = 0.1;
+
+        gbc.fill = GridBagConstraints.BOTH;
+        
+        btn.addActionListener(e -> {
+			if(rolarDados != null) {
+				rolarDados.rolarDados();
+			}
+		});
+
+        sairJogo.addActionListener(e -> {
+        	System.exit(0);
+        });
+
+        panel.add(acoesJogo, gbc);
+        
+    }
+    
+    public void addInfoJogadores_subPanel(JPanel panel, Partida partida) {
+        jogadoresPanel.setBackground(null);
+
+        TitledBorder border = BorderFactory.createTitledBorder("Jogadores");
+        border.setTitleFont(new Font("Arial", Font.BOLD, 21));
+        jogadoresPanel.setBorder(border);
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        gbc.gridy = 2;
+        gbc.weighty = 1.1;
+        gbc.fill = GridBagConstraints.BOTH;
+        
+        for (int i = 0; i < partida.getJogadores().size(); i++) {
+        	
+        	Animal animal = partida.getJogadores().get(i).getAnimal();
+            infoJogadores[i] = new JPanel(new GridLayout(4, 1));
+            
+            labelsJogadores[i][0] = new JLabel(partida.getJogadores().get(i).getJogador()); // name
+            labelsJogadores[i][1] = new JLabel("Animal: " + animal.getNome());
+            
+            labelsJogadores[i][2] = new JLabel("Pontuação: 0/"+animal.getPontosEvoluir());
+            labelsJogadores[i][3] = new JLabel("Casa: 0");
+
+            labelsJogadores[i][0].setFont(new Font("Arial", Font.BOLD, 16));
+            for (int j = 0; j < partida.getJogadores().size(); j++) {
+                infoJogadores[i].add(labelsJogadores[i][j]);
+            }
+            
+            infoJogadores[i].setBackground(null);
+            infoJogadores[i].setBorder(BorderFactory.createLineBorder(coresJogadores[i], 3));
+            jogadoresPanel.add(infoJogadores[i]);
+        }
+        
+        panel.add(jogadoresPanel, gbc);
+    }
+    
+    public void atualizarInfoJogador(List<Jogador> jogadoresOrdem, List<Jogador> jogadores) {
+        for (int i = 0; i < jogadoresOrdem.size(); i++) {
+        	Jogador jogador = jogadoresOrdem.get(i);
+        	Jogador jogadorFixo = jogadores.get(i);
+         	labelsJogadores[i][1].setText("Animal: " + jogadorFixo.getAnimal().getNome());
+            labelsJogadores[i][2].setText("Pontuação: " + jogadorFixo.getAnimal().getTotalPontos()+"/"+jogadorFixo.getAnimal().getPontosEvoluir());
+            labelsJogadores[i][3].setText("Casa: " + jogadorFixo.getAnimal().getX());
+        }
+        
+        jogadorAtualLabel.setText("Jogador atual: " + jogadores.get(0).getJogador());
+        atualizarInterface();
+    }
+    
+    public void preencherTabuleiro(JPanel tabuleiro, Partida partida) {
+    	//nem eu entendo isso, só sei que calcula o valor certo pra dimensionar o tamanho da celula e ficar tudo no meio
+
+        int gap = 2; //espaço entre as celulas
+        int rows = 7; //qtd de celulas em uma fileira
+        int cols = 9; //qtd de celulas em uma coluna
+        
+        int subWidth = tabuleiro.getWidth();
+        int subHeight = tabuleiro.getHeight();
+
+        int cellSizeX = (subWidth - (cols - 1) * gap) / cols;
+        int cellSizeY = (subHeight - (rows - 1) * gap) / rows;
+        int cellSize = Math.min(cellSizeX, cellSizeY);
+
+        int totalWidth = cellSize * cols + (cols - 1) * gap;
+        int totalHeight = cellSize * rows + (rows - 1) * gap;
+
+        int offsetX = (subWidth - totalWidth) / 2;
+        int offsetY = (subHeight - totalHeight) / 2;
+
+  
+        int posCasa = 0;
+        
+     // coluna esquerda
+        for (int i = rows - 1; i > 0; i--) {
+        	int x = offsetX;
+            int y = offsetY + i * (cellSize + gap);
+            
+            CelulaView c = new CelulaView(x, y, cellSize, cellSize,
+            		partida.getTabuleiro().getGridMain(posCasa));
+        	celulas[posCasa] = c;
+
+            tabuleiro.add(celulas[posCasa]);
+            posCasa++;
+        }
+        
+        // coluna de cima
+        for (int j = 0; j < cols; j++) {
+        	//pra fazer: trocar essas label por classes de celula
+        	int x = offsetX + j * (cellSize + gap);
+            int y = offsetY;
+            
+            CelulaView c = new CelulaView(x, y, cellSize, cellSize,
+            		partida.getTabuleiro().getGridMain(posCasa));
+        	celulas[posCasa] = c;
+
+            tabuleiro.add(celulas[posCasa]);
+            
+            posCasa++;
+        }
+
+        // coluna da direita
+        for (int i = 1; i < rows - 1; i++) {
+            int x = offsetX + (cols - 1) * (cellSize + gap);
+            int y = offsetY + i * (cellSize + gap);
+            
+            CelulaView c = new CelulaView(x, y, cellSize, cellSize,
+            		partida.getTabuleiro().getGridMain(posCasa));
+        	celulas[posCasa] = c;
+
+            tabuleiro.add( celulas[posCasa]);
+            
+            posCasa++;
+        }
+
+        // coluna de baixo
+        for (int j = cols - 1; j > 0; j--) {
+            int x = offsetX + j * (cellSize + gap);
+            int y = offsetY + (rows - 1) * (cellSize + gap);
+            
+            ;
+            CelulaView c = new CelulaView(x, y, cellSize, cellSize,
+            		partida.getTabuleiro().getGridMain(posCasa));
+        	celulas[posCasa] = c;
+
+            tabuleiro.add(celulas[posCasa]);
+            
+            posCasa++;
+        }
+        
+    }
     
 }
-
-

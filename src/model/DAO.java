@@ -61,23 +61,4 @@ public class DAO {
 			return null;
 		}
 	}
-	
-	public List<ComportamentoDAO> buscarComportamento(String animal) {//mostra todos os comportamentos do animal
-		List<ComportamentoDAO> comportamento = new ArrayList<>();
-		String sql = "SELECT nomeAnimal, nomeAlvo, comportamento FROM tbComportamentoAnimal"
-				+ " INNER JOIN tbComportamento ON tbComportamentoAnimal.idComportamento = tbComportamento.idComportamento"
-				+ " WHERE nomeAnimal = '"+animal+"'";
-		
-		try (PreparedStatement stmt = con.prepareStatement(sql);
-				ResultSet rs = stmt.executeQuery()) {
-			while(rs.next()) {
-				comportamento.add(new ComportamentoDAO(rs.getString("nomeAnimal"),
-						rs.getString("nomeAlvo"), rs.getString("comportamento")));
-			}
-			return comportamento;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
 }

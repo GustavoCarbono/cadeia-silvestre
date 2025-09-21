@@ -2,11 +2,9 @@ package utils;
 
 import java.util.List;
 
-import model.ComportamentoDAO;
 import model.DAO;
 import model.PredacaoDAO;
 import partida.Animal;
-import partida.Celula;
 import partida.Partida;
 import view.Interface;
 
@@ -18,7 +16,6 @@ public class ValidarComportamento {
 			: partida.getTabuleiro().getCelAlternativo(animal.getX(), (animal.getCaminho()-1)).getAnimais();//todos os animais do quadrado
 		
 		//chamando tabela do mysql
-		List<ComportamentoDAO> comportamentos = dao.buscarComportamento(animal.getNome());
 		List<PredacaoDAO> predacao = dao.buscarPresa(animal.getNome());
 		
 		Predacao comportar = new Predacao();

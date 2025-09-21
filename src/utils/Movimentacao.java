@@ -14,7 +14,7 @@ import view.Interface;
 public class Movimentacao {
 	private int numRdm;
 
-	public boolean mover(Jogador jogador, Partida partida, DAO dao, Interface gui) {
+	public int mover(Jogador jogador, Partida partida, DAO dao, Interface gui) {
 		Random rdm = new Random();
 		ValidarComportamento comportar = new ValidarComportamento();
 		Evoluir evoluir = new Evoluir();
@@ -26,17 +26,17 @@ public class Movimentacao {
 		Celula celula = (animal.getCaminho() == 0) 
 				? tabuleiro.getGridMain(animal.getX()) 
 				: tabuleiro.getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
-		int x = animal.getX()+numRdm;//o quadrado do animal mais o valor rolado
 		
 		if(celula.getOutroCaminho()) {
 			boolean entrar = false;//método que ver se ele quer entrar
 			if(entrar) {// se o jogador escolheu sim ou não ir para outro caminho
 				animal.setCaminho(celula.getCaminhoAlternativo().getCaminhoId());
 				entrarCaminhoAlternativo(animal, celula, celula.getCaminhoAlternativo());
+				gui.pegarCelulaView(animal, celula, celula.getCaminhoAlternativo());
+				gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
 				numRdm--;
 			}
 		}
-		
 		int passos = numRdm;		
 		while(passos>0) {
 			int pos = animal.getX();
@@ -51,9 +51,8 @@ public class Movimentacao {
 				Celula caminhoAlt = celula.getCaminhoAlternativo();
 				if(entrar) {
 					entrarCaminhoAlternativo(animal, celula, caminhoAlt);
-					// espaço para chamar método de inteface
 					
-					//espaço para comportamento
+					gui.pegarCelulaView(animal, celula, caminhoAlt);
 					passos--;
 				}
 			}
@@ -85,16 +84,14 @@ public class Movimentacao {
 					// coloca o animal no novo quadrado
 					tabuleiro.getGridMain(0).addAnimal(animal);
 					evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao, gui);//adiciona metade do total de pontos da evolução
-					// espaço para chamar método de inteface
 					
-					//espaço para comportamento
+					gui.pegarCelulaView(animal, celula, tabuleiro.getGridMain(0));
 					passos--;
 				} else {
 					sairCaminhoAlternativo(animal, celula, celulaAlt.getFim());
-					passos--;
-					// espaço para chamar método de inteface
 					
-					//espaço para comportamento
+					gui.pegarCelulaView(animal, celula, celulaAlt.getFim());
+					passos--;
 				}
 			} else {
 				celula.removeAnimal(animal.getId());// remove o animal do quadrado
@@ -102,16 +99,19 @@ public class Movimentacao {
 				// coloca o animal no novo quadrado
 				if(celula.getCaminhoId() == 0) {
 					tabuleiro.getGridMain(pos+1).addAnimal(animal);
+					
+					gui.pegarCelulaView(animal, celula, tabuleiro.getGridMain(pos+1));
 				} else {
 					celulaAlt.getCelula(pos+1).addAnimal(animal);
+					
+					gui.pegarCelulaView(animal, celula, celulaAlt.getCelula(pos+1));
 				}
-				// espaço para chamar método de inteface
-				
-				//espaço para comportamento
 				passos--;
 			}
 		}
-		return true;
+		gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
+		comportar.validarComportamento(animal, partida, dao, gui);
+		return numRdm;
 	}
 	
 	public void entrarCaminhoAlternativo(Animal animal, Celula celulaAntiga, Celula celulaNova) {

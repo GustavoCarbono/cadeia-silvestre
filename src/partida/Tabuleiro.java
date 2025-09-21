@@ -34,6 +34,10 @@ public class Tabuleiro {
 		return Grid[x];
 	}
 	
+	public Celula[] getGridsMain() {
+		return Grid;
+	}
+	
 	public int getGridMainCount() {
 		return Grid.length;
 	}

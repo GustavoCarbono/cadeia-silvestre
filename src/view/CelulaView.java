@@ -24,13 +24,6 @@ public class CelulaView extends JPanel {
         setBackground(new Color(0, 160, 0));
         setOpaque(true);
 	}
-	public CelulaView(int posX, int posY, int width, int height) {
-		posCelula = new Posicao(posX, posY);
-		animais = new ArrayList<>();
-		setBounds(posX, posY, width, height);
-        setBackground(new Color(0, 160, 0));
-        setOpaque(true);
-	}
 	
 	public Posicao getPosCelula() {
 		return posCelula;
@@ -46,7 +39,6 @@ public class CelulaView extends JPanel {
 				return animal;
 			}
 		}
-		System.out.println("Não foi possivel achar o animal");
 		return null;
 	}
 	
