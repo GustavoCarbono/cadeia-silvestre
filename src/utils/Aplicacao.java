@@ -43,9 +43,10 @@ public class Aplicacao {
 		gui.setRolarDados(() -> {
 			if(!partida.getFinalizou()) {
 				int dado = mov.mover(partida.getOrdemJogador().get(0), partida, dao, gui);//número do dado dentro desse método
-				//gui.seiLaOQue(dado) atualiza
+				gui.atualizarDados(dado);
 				partida.aumentarTurnoAtual();
 				partida.mudarOrdemJogador();
+				gui.atualizarJogadorAtual(partida.getOrdemJogador().get(0).getJogador());
 				if(partida.getTurnoAtual()%8 == 0) {
 					minijogo.comecaMinijogo();
 				}

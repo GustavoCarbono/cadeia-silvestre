@@ -208,7 +208,7 @@ public class Interface extends JFrame {
         border.setTitleFont(new Font("Arial", Font.BOLD, 21));
         acoesJogo.setBorder(border);
 
-        btnDado = new JButton("Rolar Dado (agora funcional)");
+        btnDado = new JButton("Rolar Dado");
         JButton sairJogo = new JButton("Sair");
         
         Font fonte = new Font("Arial", Font.BOLD, 15);
@@ -237,6 +237,14 @@ public class Interface extends JFrame {
 
         panel.add(acoesJogo, gbc);
         
+    }
+    
+    public void atualizarDados(int dado) {
+    	numeroRodadoLabel.setText(Integer.toString(dado));;
+    }
+    
+	public void atualizarJogadorAtual(String jogador) {
+    	jogadorAtualLabel.setText("Jogador atual: "+jogador);
     }
     
     public void addInfoJogadores_subPanel(JPanel panel, Partida partida) {
@@ -283,7 +291,6 @@ public class Interface extends JFrame {
             labelsJogadores[i][3].setText("Casa: " + jogadorFixo.getAnimal().getX());
         }
         
-        jogadorAtualLabel.setText("Jogador atual: " + jogadores.get(0).getJogador());
         atualizarInterface();
     }
     

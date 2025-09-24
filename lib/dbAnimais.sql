@@ -1,6 +1,10 @@
 CREATE DATABASE dbAnimais;
 USE dbAnimais;
 
+-- área perigosa
+drop table tbAnimais;
+drop table tbPredacao;
+
 CREATE TABLE tbAnimais (
     nomeAnimal VARCHAR(30) PRIMARY KEY,
     evolucao VARCHAR(30), -- nome Animal apenas uma evolução
@@ -19,10 +23,10 @@ CREATE TABLE tbPredacao (
 
 SELECT * FROM tbAnimais;
 SELECT * FROM tbPredacao;
-SELECT * FROM tbComportamento;
-SELECT * FROM tbComportamentoAnimal;
 
--- área perigosa
-drop table tbAnimais;
-drop table tbComportamentoAnimal;
-drop table tbPredacao;
+-- insert de animais
+INSERT tbAnimais (nomeAnimal) values
+('gorila'),
+('avestruz'),
+('leão'),
+('elefante africano')

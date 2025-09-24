@@ -43,14 +43,14 @@ public class Movimentacao {
 		}
 		int passos[] = {numRdm};
 		
-		Timer timer = new Timer(500, null);
+		Timer timer = new Timer(10, null);
 	    timer.addActionListener(e -> {
 	        if (passos[0] <= 0) {
 	            ((Timer) e.getSource()).stop();
 	            
 				gui.desbloquearBotao();
 	            gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
-	            comportar.validarComportamento(animal, partida, dao, gui);
+	            //comportar.validarComportamento(animal, partida, dao, gui);
 	            return;
 	        }
 	        
