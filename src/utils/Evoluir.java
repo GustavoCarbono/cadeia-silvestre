@@ -30,7 +30,7 @@ public class Evoluir {
 				? partida.getTabuleiro().getGridMain(animal.getX()) 
 				: partida.getTabuleiro().getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
 		System.out.println("o animal "+animal.getNome()+" evoluiu para "+evolucao.getNome());
-		//troca o animal para a evolução
+		gui.atualizarImg(animal, partida);
 		animal.setNome(evolucao.getNome());
 		animal.setEvolucao(evolucao.getEvolucao());
 		animal.setPontosEvoluir(evolucao.getEvoluirPontos());

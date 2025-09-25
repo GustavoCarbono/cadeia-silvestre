@@ -116,6 +116,26 @@ public class Interface extends JFrame {
         revalidate();
     }
     
+    public void atualizarImg(Animal animal, Partida partida) {
+    	for(int i=0; i<animalJogador.size(); i++) {
+    		if(animalJogador.get(i).getAnimal().getId() == animal.getId()) {
+    			animalJogador.get(i).atualizaImg(animal.getImg(), 40, 40);
+    			CelulaView celula = pegarCelula(partida.getTabuleiro().getGridMain(animal.getX()));
+    			if(celula == null) return;
+    			celula.setAnimais(animalJogador.get(i), animal.getId());
+    		}
+    	}
+    }
+    
+    public CelulaView pegarCelula(Celula celula) {
+    	for(int i=0; i<celulas.length; i++) {
+    		if(celulas[i].getCelula().getX() == celula.getX()) {
+    			return celulas[i];
+    		}
+    	}
+    	return null;
+    }
+    
     public void setRolarDados(RolarDados dados) {
     	this.rolarDados = dados;
     }

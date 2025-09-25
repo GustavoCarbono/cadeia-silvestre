@@ -8,11 +8,12 @@ import partida.Animal;
 public class AnimalView {
 	private Animal animal;
 	private JLabel label;
+	private ImageIcon icon;
 	
 	public AnimalView(Animal animal, int largura, int altura) {
         this.animal = animal;
         
-        ImageIcon icon = new ImageIcon(getClass().getResource(animal.getImg()));
+         icon = new ImageIcon(getClass().getResource(animal.getImg()));
         this.label = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(largura, altura, java.awt.Image.SCALE_SMOOTH)));
 	}
 	
@@ -22,5 +23,10 @@ public class AnimalView {
 
 	public JLabel getLabel() {
 		return label;
+	}
+	
+	public void atualizaImg(String animalImg, int largura, int altura) {
+		icon = new ImageIcon(getClass().getResource(animalImg));
+        this.label = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(largura, altura, java.awt.Image.SCALE_SMOOTH)));
 	}
 }

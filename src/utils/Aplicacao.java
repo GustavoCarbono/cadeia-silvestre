@@ -31,9 +31,9 @@ public class Aplicacao {
 		
 		// temporario
 		List<Jogador> jogadores = new ArrayList<>();
-		jogadores.add(new Jogador("p1", new Animal(1, "macaco", "gorila", 20, "p1", "/images/AnimaisPrincipais/Elefante.png")));
+		jogadores.add(new Jogador("p1", new Animal(1, "macaco", "babuíno", 20, "p1", "/images/AnimaisPrincipais/Elefante.png")));
 		jogadores.add(new Jogador("p2", new Animal(2, "ema", "avestruz", 20, "p2", "/images/AnimaisPrincipais/ema.png")));
-		jogadores.add(new Jogador("p3", new Animal(3, "puma", "leão", 20, "p3", "/images/AnimaisPrincipais/monkey.png")));
+		jogadores.add(new Jogador("p3", new Animal(3, "puma", "hiena", 20, "p3", "/images/AnimaisPrincipais/monkey.png")));
 		jogadores.add(new Jogador("p4", new Animal(4, "elefante-pigmeu-de-Bornéu", "elefante africano", 20, "p4", "/images/AnimaisPrincipais/puma.png")));
 		//----------------------------------------
 		
