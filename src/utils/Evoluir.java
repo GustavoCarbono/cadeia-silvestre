@@ -18,7 +18,7 @@ public class Evoluir {
 			evoluir(animal, partida, dao, gui);	//evolui
 			animal.setTotalPontos(pontos-p);	//coloca a sobra dos pontos 
 			celula.setAnimal(animal, animal.getId());
-		} else {
+		} else {	
 			animal.setTotalPontos(animal.getTotalPontos()+pontos);	//apenas adiciona pontos
 			celula.setAnimal(animal, animal.getId());
 		}
@@ -30,11 +30,16 @@ public class Evoluir {
 				? partida.getTabuleiro().getGridMain(animal.getX()) 
 				: partida.getTabuleiro().getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
 		System.out.println("o animal "+animal.getNome()+" evoluiu para "+evolucao.getNome());
-		gui.atualizarImg(animal, partida);
+		System.out.println(evolucao.getNome());
+		System.out.println(animal.getImg());
 		animal.setNome(evolucao.getNome());
 		animal.setEvolucao(evolucao.getEvolucao());
 		animal.setPontosEvoluir(evolucao.getEvoluirPontos());
+		animal.setImg(evolucao.getImg());
+		animal.setTotalPontos(0);
+		System.out.println(animal.getImg());
 		celula.setAnimal(animal, animal.getId());//aplica no tabuleiro
+		gui.atualizarImg(animal, partida);
 		//método para atualizar a interface
 		if(animal.getEvolucao() == null) {
 			System.out.println("acabou");

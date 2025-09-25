@@ -43,7 +43,7 @@ public class Movimentacao {
 		}
 		int passos[] = {numRdm};
 		
-		Timer timer = new Timer(10, null);
+		Timer timer = new Timer(300, null);
 	    timer.addActionListener(e -> {
 	        if (passos[0] <= 0) {
 	            ((Timer) e.getSource()).stop();
@@ -51,10 +51,11 @@ public class Movimentacao {
 				gui.desbloquearBotao();
 	            gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
 	            //comportar.validarComportamento(animal, partida, dao, gui);
+	            gui.atualizarJogadorAtual(partida.getOrdemJogador().get(0).getJogador());
 	            return;
 	        }
 	        
-	        moverPasso(animal, evoluir, partida, dao, gui);
+			moverPasso(animal, evoluir, partida, dao, gui);
 	        passos[0]--;
 	    });
 
@@ -72,6 +73,7 @@ public class Movimentacao {
 				: tabuleiro.getCelAlternativo(pos, (caminho-1));
 		
 		boolean entrar = false;//método que ver se ele quer entrar
+		gui.atualizarImg(animal, partida);
 		if(celula.getOutroCaminho()) {
 			Celula caminhoAlt = celula.getCaminhoAlternativo();
 			if(entrar) {
@@ -107,8 +109,9 @@ public class Movimentacao {
 				System.out.println("o animal "+animal.getNome()+" deu uma volta");
 				// coloca o animal no novo quadrado
 				tabuleiro.getGridMain(0).addAnimal(animal);
-				evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao, gui);//adiciona metade do total de pontos da evolução
+				evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao, gui);
 				
+				gui.atualizarImg(animal, partida);
 				gui.pegarCelulaView(animal, celula, tabuleiro.getGridMain(0));
 			} else {
 				sairCaminhoAlternativo(animal, celula, celulaAlt.getFim());

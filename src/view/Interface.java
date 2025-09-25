@@ -94,8 +94,6 @@ public class Interface extends JFrame {
     		animalJogador.add(new AnimalView(jogador.getAnimal(), 40, 40));
     	}
 
-        //criarTabuleiro(partida.getTabuleiro());
-
         for(int i=0; i<animalJogador.size(); i++) {
         	celulas[0].addAnimal(animalJogador.get(i));
     	}
@@ -117,12 +115,11 @@ public class Interface extends JFrame {
     }
     
     public void atualizarImg(Animal animal, Partida partida) {
-    	for(int i=0; i<animalJogador.size(); i++) {
-    		if(animalJogador.get(i).getAnimal().getId() == animal.getId()) {
-    			animalJogador.get(i).atualizaImg(animal.getImg(), 40, 40);
-    			CelulaView celula = pegarCelula(partida.getTabuleiro().getGridMain(animal.getX()));
-    			if(celula == null) return;
-    			celula.setAnimais(animalJogador.get(i), animal.getId());
+    	for(AnimalView av : animalJogador) {
+    		if(av.getAnimal().getId() == animal.getId()) {
+    			av.atualizaImg(animal, 40, 40);
+    			atualizarInterface();
+    			return;
     		}
     	}
     }
@@ -179,12 +176,11 @@ public class Interface extends JFrame {
 		
 		//isso reseta o cache do java pra imagem não continuar viva depois do repaint
 		SwingUtilities.updateComponentTreeUI(layeredPane);
-
-		CelulaView newCell = novaCel;
-		newCell.add(animal.getLabel()); 
+		novaCel.addAnimal(animal);;
+		novaCel.add(animal.getLabel()); 
 		
-		newCell.revalidate();
-		newCell.repaint();
+		novaCel.revalidate();
+		novaCel.repaint();
 		SwingUtilities.updateComponentTreeUI(layeredPane);
 	    
 	}
@@ -390,7 +386,6 @@ public class Interface extends JFrame {
         	celulas[posCasa] = c;
 
             tabuleiro.add(celulas[posCasa]);
-            
             posCasa++;
         }
         

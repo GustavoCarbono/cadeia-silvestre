@@ -4,14 +4,15 @@ public class AnimaisDAO {
 	private String nome;
 	private String evolucao;
 	private int evoluirPontos;
-	private boolean ultimaEvolucao;
+	private String img;
 	
 	//tabela do mysql
 	
-	public AnimaisDAO(String nome, String evolucao, int evoluirPontos) {
+	public AnimaisDAO(String nome, String evolucao, int evoluirPontos, String img) {
 		this.nome = nome;
 		this.evolucao = evolucao;
 		this.evoluirPontos = evoluirPontos;
+		this.img = img;
 	}
 
 	public String getNome() {
@@ -26,7 +27,7 @@ public class AnimaisDAO {
 		return evoluirPontos;
 	}
 	
-	public boolean getUltimaEvolucao() {
-		return ultimaEvolucao;
+	public String getImg() {
+		return img;
 	}
 }

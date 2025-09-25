@@ -42,7 +42,7 @@ public class CelulaView extends JPanel {
 		return null;
 	}
 	
-	public void setAnimais(AnimalView animal, int id) {
+	public void setAnimal(AnimalView animal, int id) {
 		if (!animais.isEmpty()) { 	// ver se tem animais na casa
 			for(int i = 0; i < animais.size(); i++) {
 				AnimalView animalUni = animais.get(i);

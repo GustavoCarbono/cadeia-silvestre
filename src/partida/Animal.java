@@ -13,11 +13,12 @@ public class Animal {
 	private String img;
 	private int caminho;//0 = caminho principal, resto igual outros caminho
 	
-	public Animal(int id, String nome, String evolucao, int x) {
+	public Animal(int id, String nome, String evolucao, int x, String img) {
 		this.id = id;
 		this.nome = nome;
 		this.evolucao = evolucao;
 		this.x = x;
+		this.img = img;
 	}
 	
 	public Animal(int id, String nome, String evolucao, int pontosEvoluir, String dono, String img) {
@@ -90,5 +91,9 @@ public class Animal {
 
 	public String getImg() {
 		return img;
+	}
+	
+	public void setImg(String img) {
+		this.img = img;
 	}
 }

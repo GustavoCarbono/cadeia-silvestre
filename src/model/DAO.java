@@ -34,7 +34,7 @@ public class DAO {
 			ResultSet rs = stmt.executeQuery()){
 			if(rs.next()) {
 				return new AnimaisDAO(rs.getString("nomeAnimal"),
-							rs.getString("evolucao"), rs.getInt("evoluirPontos"));
+							rs.getString("evolucao"), rs.getInt("evoluirPontos"), rs.getString("img"));
 			} else {
 				System.out.println("resultado não encontrado");
 				return null;

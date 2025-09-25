@@ -8,13 +8,12 @@ import partida.Animal;
 public class AnimalView {
 	private Animal animal;
 	private JLabel label;
-	private ImageIcon icon;
 	
 	public AnimalView(Animal animal, int largura, int altura) {
         this.animal = animal;
         
-         icon = new ImageIcon(getClass().getResource(animal.getImg()));
-        this.label = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(largura, altura, java.awt.Image.SCALE_SMOOTH)));
+        this.label = new JLabel();
+        atualizaImg(animal, largura, altura);
 	}
 	
 	public Animal getAnimal() {
@@ -25,8 +24,17 @@ public class AnimalView {
 		return label;
 	}
 	
-	public void atualizaImg(String animalImg, int largura, int altura) {
-		icon = new ImageIcon(getClass().getResource(animalImg));
-        this.label = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(largura, altura, java.awt.Image.SCALE_SMOOTH)));
+	public void atualizaImg(Animal animal, int largura, int altura) {
+		this.animal = animal;
+		
+		ImageIcon icon = carregarImagem(animal, largura, altura);
+        this.label.setIcon(icon);
+        this.label.revalidate(); // força o layout a se ajustar
+        this.label.repaint();
+	}
+	
+	public ImageIcon carregarImagem(Animal animal, int largura, int altura) {
+		ImageIcon icon = new ImageIcon(getClass().getResource(animal.getImg()));
+		return new ImageIcon(icon.getImage().getScaledInstance(largura, altura, java.awt.Image.SCALE_SMOOTH));
 	}
 }
