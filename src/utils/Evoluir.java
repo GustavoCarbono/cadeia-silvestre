@@ -29,15 +29,11 @@ public class Evoluir {
 		Celula celula = (animal.getCaminho() == 0) 
 				? partida.getTabuleiro().getGridMain(animal.getX()) 
 				: partida.getTabuleiro().getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
-		System.out.println("o animal "+animal.getNome()+" evoluiu para "+evolucao.getNome());
-		System.out.println(evolucao.getNome());
-		System.out.println(animal.getImg());
 		animal.setNome(evolucao.getNome());
 		animal.setEvolucao(evolucao.getEvolucao());
 		animal.setPontosEvoluir(evolucao.getEvoluirPontos());
 		animal.setImg(evolucao.getImg());
 		animal.setTotalPontos(0);
-		System.out.println(animal.getImg());
 		celula.setAnimal(animal, animal.getId());//aplica no tabuleiro
 		gui.atualizarImg(animal, partida);
 		//método para atualizar a interface

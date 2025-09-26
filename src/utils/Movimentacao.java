@@ -22,7 +22,7 @@ public class Movimentacao {
 		Evoluir evoluir = new Evoluir();
 		Tabuleiro tabuleiro = partida.getTabuleiro();
 		
-		numRdm = rdm.nextInt(6)+1; // dado 1 a 6
+		numRdm = rdm.nextInt(6)+10; // dado 1 a 6
 		Animal animal = jogador.getAnimal();
 		
 		Celula celula = (animal.getCaminho() == 0) 
@@ -109,7 +109,7 @@ public class Movimentacao {
 				System.out.println("o animal "+animal.getNome()+" deu uma volta");
 				// coloca o animal no novo quadrado
 				tabuleiro.getGridMain(0).addAnimal(animal);
-				evoluir.aumentarPontos(animal, partida, (animal.getPontosEvoluir()/2), dao, gui);
+				evoluir.evoluir(animal, partida, dao, gui);
 				
 				gui.atualizarImg(animal, partida);
 				gui.pegarCelulaView(animal, celula, tabuleiro.getGridMain(0));
