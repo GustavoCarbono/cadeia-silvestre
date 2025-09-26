@@ -4,13 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +21,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import partida.Animal;
@@ -36,7 +40,15 @@ public class Interface extends JFrame {
 	private List<AnimalView> animalJogador;
 	
 	private JPanel panel = new JPanel(new GridBagLayout());
-    private JPanel tabuleiro = new JPanel(new BorderLayout()); 
+	private JPanel tabuleiro = new JPanel(new GridBagLayout()) { private Image background = new ImageIcon(
+	        getClass().getResource("/images/fundo/fundo2.png")
+		    ).getImage();
+
+		    @Override
+		    protected void paintComponent(Graphics g) {
+		        super.paintComponent(g);
+		        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+		    }}; 
     private JPanel subTabuleiro = new JPanel(null);  
     private JPanel subPanel = new JPanel(new GridBagLayout());
 	
@@ -61,8 +73,10 @@ public class Interface extends JFrame {
     	configurarJanela();
     	celulas = new CelulaView[x];
     	
-    	tabuleiro.setBackground(new Color(74, 42, 18));
-        tabuleiro.setPreferredSize(new Dimension((int) (getHeight() * 1.35), getHeight()));
+    	tabuleiro.setBackground(null);
+    	tabuleiro.setOpaque(false);
+    	
+        tabuleiro.setPreferredSize(new Dimension((int) (getHeight() * 1.32), getHeight()));
         add(tabuleiro, BorderLayout.WEST);
     	
     	panel.setBackground(new Color(255, 255, 255));
@@ -70,13 +84,14 @@ public class Interface extends JFrame {
         
         atualizarInterface();
         
-        subPanel.setPreferredSize(new Dimension((int) (panel.getWidth() * 0.99), (int) (panel.getHeight() * 0.99)));
+        subPanel.setPreferredSize(new Dimension((int) (panel.getWidth() * 0.95), (int) (panel.getHeight() * 0.99)));
         subPanel.setBackground(null);
         panel.add(subPanel);
         
-        subTabuleiro.setPreferredSize(new Dimension((int) (getHeight() * 1.35), getHeight()));
-        subTabuleiro.setBackground(new Color(74, 42, 18));
-        tabuleiro.add(subTabuleiro , BorderLayout.CENTER);
+        subTabuleiro.setPreferredSize(new Dimension((int) (tabuleiro.getWidth() * 0.99), (int) (tabuleiro.getHeight() * 0.99)));
+        subTabuleiro.setBackground(null);
+        subTabuleiro.setOpaque(false);
+        tabuleiro.add(subTabuleiro);
         
         atualizarInterface();
         
@@ -91,7 +106,7 @@ public class Interface extends JFrame {
     	if(!(jogadores.size()>1&&jogadores.size()<5)) return;
     	animalJogador = new ArrayList<>();
     	for(Jogador jogador : jogadores) {
-    		animalJogador.add(new AnimalView(jogador.getAnimal(), 40, 40));
+    		animalJogador.add(new AnimalView(jogador.getAnimal(), (celulas[0].getWidth() / 2) - 10, (celulas[0].getWidth() / 2) - 10));
     	}
 
         for(int i=0; i<animalJogador.size(); i++) {
@@ -117,7 +132,7 @@ public class Interface extends JFrame {
     public void atualizarImg(Animal animal, Partida partida) {
     	for(AnimalView av : animalJogador) {
     		if(av.getAnimal().getId() == animal.getId()) {
-    			av.atualizaImg(animal, 40, 40);
+    			av.atualizaImg(animal, celulas[0].getWidth() / 2 - 10, celulas[0].getWidth() / 2 - 10);
     			atualizarInterface();
     			return;
     		}
@@ -205,7 +220,7 @@ public class Interface extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
         gbc.weightx = 1.0;
-        gbc.weighty = 0.1;
+        gbc.weighty = 0.9;
         gbc.fill = GridBagConstraints.BOTH;
         
         panel.add(infoJogo, gbc);
@@ -237,7 +252,7 @@ public class Interface extends JFrame {
         acoesJogo.setBackground(null);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 1;
-        gbc.weighty = 0.1;
+        gbc.weighty = 0.9;
 
         gbc.fill = GridBagConstraints.BOTH;
         
@@ -256,7 +271,7 @@ public class Interface extends JFrame {
     }
     
     public void atualizarDados(int dado) {
-    	numeroRodadoLabel.setText(Integer.toString(dado));;
+    	numeroRodadoLabel.setText("O dado rolou o número: " + Integer.toString(dado));;
     }
     
 	public void atualizarJogadorAtual(String jogador) {
@@ -272,7 +287,7 @@ public class Interface extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         
         gbc.gridy = 2;
-        gbc.weighty = 1.1;
+        gbc.weighty = 1.01;
         gbc.fill = GridBagConstraints.BOTH;
         
         for (int i = 0; i < partida.getJogadores().size(); i++) {
@@ -353,7 +368,7 @@ public class Interface extends JFrame {
             int y = offsetY;
             
             CelulaView c = new CelulaView(x, y, cellSize, cellSize,
-            		partida.getTabuleiro().getGridMain(posCasa));
+            		partida.getTabuleiro().getGridMain(posCasa)) ;
         	celulas[posCasa] = c;
 
             tabuleiro.add(celulas[posCasa]);
@@ -367,7 +382,7 @@ public class Interface extends JFrame {
             int y = offsetY + i * (cellSize + gap);
             
             CelulaView c = new CelulaView(x, y, cellSize, cellSize,
-            		partida.getTabuleiro().getGridMain(posCasa));
+            		partida.getTabuleiro().getGridMain(posCasa)); 
         	celulas[posCasa] = c;
 
             tabuleiro.add( celulas[posCasa]);
@@ -382,13 +397,22 @@ public class Interface extends JFrame {
             
             ;
             CelulaView c = new CelulaView(x, y, cellSize, cellSize,
-            		partida.getTabuleiro().getGridMain(posCasa));
+            		partida.getTabuleiro().getGridMain(posCasa)) 
+    		;
         	celulas[posCasa] = c;
 
             tabuleiro.add(celulas[posCasa]);
             posCasa++;
         }
-        
+
+        // Combine: outer, then inner
+        for(int i = 0; i<celulas.length; i++) {
+        	 celulas[i].setBorder(BorderFactory.createLineBorder(new Color(0, 57, 0), 5));
+
+        }
+               
     }
+    
+    
     
 }
