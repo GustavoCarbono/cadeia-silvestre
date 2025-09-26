@@ -43,7 +43,7 @@ public class Movimentacao {
 		}
 		int passos[] = {numRdm};
 		
-		Timer timer = new Timer(300, null);
+		Timer timer = new Timer(150, null);
 	    timer.addActionListener(e -> {
 	        if (passos[0] <= 0) {
 	            ((Timer) e.getSource()).stop();
