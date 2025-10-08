@@ -4,14 +4,16 @@ public class AnimaisDAO {
 	private String nome;
 	private String evolucao;
 	private int evoluirPontos;
+	private int nivel;
 	private String img;
 	
 	//tabela do mysql
 	
-	public AnimaisDAO(String nome, String evolucao, int evoluirPontos, String img) {
+	public AnimaisDAO(String nome, String evolucao, int evoluirPontos, int nivel, String img) {
 		this.nome = nome;
 		this.evolucao = evolucao;
 		this.evoluirPontos = evoluirPontos;
+		this.nivel = nivel;
 		this.img = img;
 	}
 
@@ -29,5 +31,9 @@ public class AnimaisDAO {
 	
 	public String getImg() {
 		return img;
+	}
+	
+	public int getNivel() {
+		return nivel;
 	}
 }

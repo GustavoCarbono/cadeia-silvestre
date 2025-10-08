@@ -9,25 +9,25 @@ public class Animal {
 	private String evolucao;
 	private int totalPontos;
 	private int pontosEvoluir;
+	private int nivel;
 	private int x;
 	private String img;
 	private int caminho;//0 = caminho principal, resto igual outros caminho
 	
-	public Animal(int id, String nome, String evolucao, int x, String img) {
+	public Animal(int id, String nome, String img) {
 		this.id = id;
 		this.nome = nome;
-		this.evolucao = evolucao;
-		this.x = x;
 		this.img = img;
 	}
 	
-	public Animal(int id, String nome, String evolucao, int pontosEvoluir, String dono, String img) {
+	public Animal(int id, String nome, String evolucao, int pontosEvoluir, int nivel, String dono, String img) {
 		this.id = id;
 		this.nome = nome;
 		this.dono = dono;
 		this.evolucao = evolucao;
 		this.totalPontos = 0;
 		this.pontosEvoluir = pontosEvoluir;
+		this.nivel = nivel;
 		this.x = 0;
 		this.img = img;
 		this.caminho = 0;

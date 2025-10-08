@@ -31,10 +31,10 @@ public class Aplicacao {
 		
 		// temporario
 		List<Jogador> jogadores = new ArrayList<>();
-		jogadores.add(new Jogador("Alexandre", new Animal(1, "Macaco", "Babuíno", 20, "Alexandre", "/images/AnimaisPrincipais/monkey.png")));
-		jogadores.add(new Jogador("Daniel", new Animal(2, "Ema", "Avestruz", 20, "Daniel", "/images/AnimaisPrincipais/ema.png")));
-		jogadores.add(new Jogador("Emanuel", new Animal(3, "Puma", "Hiena", 20, "Emanuel", "/images/AnimaisPrincipais/puma.png")));
-		jogadores.add(new Jogador("Gustavo", new Animal(4, "Elefante-Pigmeu-de-Bornéu", "Elefante Africano", 20, "Gustavo", "/images/AnimaisPrincipais/elefante.png")));
+		jogadores.add(new Jogador("Alexandre", new Animal(1, "Macaco", "Babuíno", 20, 1, "Alexandre", "/images/AnimaisPrincipais/monkey.png")));
+		jogadores.add(new Jogador("Daniel", new Animal(2, "Ema", "Avestruz", 20, 1, "Daniel", "/images/AnimaisPrincipais/ema.png")));
+		jogadores.add(new Jogador("Emanuel", new Animal(3, "Puma", "Hiena", 20, 1, "Emanuel", "/images/AnimaisPrincipais/puma.png")));
+		jogadores.add(new Jogador("Gustavo", new Animal(4, "Elefante-Pigmeu-de-Bornéu", "Elefante Africano", 20, 1, "Gustavo", "/images/AnimaisPrincipais/elefante.png")));
 		//----------------------------------------
 		
 		Movimentacao mov = new Movimentacao();
