@@ -15,14 +15,14 @@ import view.Interface;
 
 public class Movimentacao {
 	private int numRdm;
-
+	Iterador iGlobal = new Iterador();
 	public int mover(Jogador jogador, Partida partida, DAO dao, Interface gui) {
 		Random rdm = new Random();
 		ValidarComportamento comportar = new ValidarComportamento();
 		Evoluir evoluir = new Evoluir();
 		Tabuleiro tabuleiro = partida.getTabuleiro();
 		
-		numRdm = rdm.nextInt(6)+10; // dado 1 a 6
+		numRdm = rdm.nextInt(6)+1; // dado 1 a 6
 		Animal animal = jogador.getAnimal();
 		
 		Celula celula = (animal.getCaminho() == 0) 
@@ -43,18 +43,59 @@ public class Movimentacao {
 		}
 		int passos[] = {numRdm};
 		
+
+
 		Timer timer = new Timer(150, null);
 	    timer.addActionListener(e -> {
 	        if (passos[0] <= 0) {
 	            ((Timer) e.getSource()).stop();
 	            
-				gui.desbloquearBotao();
-	            gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
-	            //comportar.validarComportamento(animal, partida, dao, gui);
-	            gui.atualizarJogadorAtual(partida.getOrdemJogador().get(0).getJogador());
+
+
+	            Animal animal1 = partida.getJogadores().get(iGlobal.getI()).getAnimal();
+	          
+            	Jogador jogadorAtual = partida.getJogadores().get(iGlobal.getI());
+
+            	
+	            String presaCelula = gui.getCelula(animal1.getX()).getPresa(); // get prey from current cell
+	            if (presaCelula != null) {
+	     
+	            	evoluir.aumentarPontos(animal, partida, 5, dao, gui);
+	                
+
+	             	gui.mostrarMensagemTemporaria("O jogador " + jogadorAtual.getJogador() + " capturou uma presa! +5 pontos!", 2000);
+
+	                // Delay unlocking the button until after 3 seconds
+	                new javax.swing.Timer(2000, evt -> {
+
+	                	if(jogadorAtual.getAnimal().getPontosEvoluir() == 100) {
+	                		 	gui.mostrarMensagemTemporaria("Jogador " + partida.getJogadores().get(iGlobal.getI()).getJogador() + " evoluiu! O jogo terminou." , 3000);
+	                		 	
+	                		 	new javax.swing.Timer(3000, ev -> {
+	                	            gui.terminarJogo();
+	                	            ((javax.swing.Timer) ev.getSource()).stop();
+	                	        }).start();
+	                	}
+	                	else {
+		                    gui.desbloquearBotao();
+		                    gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
+		                    gui.atualizarJogadorAtual(partida.getOrdemJogador().get(0).getJogador());
+	                	}
+	                    iGlobal.setI(iGlobal.getI() + 1);
+	                  ((javax.swing.Timer) evt.getSource()).stop(); // stop the timer after running once
+	                }).start();
+	                
+	            } else {
+		            	iGlobal.setI(iGlobal.getI() + 1);
+		                gui.desbloquearBotao();
+		                gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
+		                gui.atualizarJogadorAtual(partida.getOrdemJogador().get(0).getJogador());
+	            }
+		        
+		        
 	            return;
-	        }
-	        
+	        	}
+
 			moverPasso(animal, evoluir, partida, dao, gui);
 	        passos[0]--;
 	    });

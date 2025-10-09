@@ -20,7 +20,7 @@ public class Partida {
 			for(Jogador jogador : jogadores) {
 				tabuleiro.getGridMain(0).addAnimal(jogador.getAnimal());//adiciona o animal do jogador no quadrado 0
 			}
-			randomizarJogadores();//randomiza a ondem dos jogadores
+
 			ordemJogador = new ArrayList<>(this.jogadores);
 		} else {
 			System.out.println("quantidade de jogadores inválida");
@@ -28,9 +28,7 @@ public class Partida {
 		}
 	}
 	
-	public void randomizarJogadores() {
-		Collections.shuffle(jogadores);
-	}
+
 
 	public int getTurnoAtual() {
 		return turnoAtual;

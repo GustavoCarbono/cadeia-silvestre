@@ -1,10 +1,13 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import partida.Celula;
@@ -15,7 +18,9 @@ public class CelulaView extends JPanel {
 	private Posicao posCelula;
 	private Celula celula;
 	private List<AnimalView> animais;
-	
+	private String presaNome;
+	private Image backgroundImage;
+	private Image overlayImage;
 	public CelulaView(int posX, int posY, int width, int height, Celula celula) {
 		this.celula = celula;
 		posCelula = new Posicao(posX, posY);
@@ -83,11 +88,87 @@ public class CelulaView extends JPanel {
 	    }
 	}
 	
+	 public void setBackgroundImage(String imagePath) {
+	        backgroundImage = new ImageIcon(getClass().getResource(imagePath)).getImage();
+	        repaint();
+	    }
+
+	 public void setOverlayImage(String imagePath) {
+	        overlayImage = new ImageIcon(getClass().getResource(imagePath)).getImage();
+	        repaint();
+	    }
+
+
+	 @Override
+	 protected void paintComponent(Graphics g) {
+	     super.paintComponent(g);
+
+	     if (backgroundImage != null) {
+	         int panelW = getWidth();
+	         int panelH = getHeight();
+
+	         int imgW = backgroundImage.getWidth(this);
+	         int imgH = backgroundImage.getHeight(this);
+
+	         // Calculate scale to cover the panel (may crop slightly)
+	         double scale = Math.max(
+	             (double) panelW / imgW,
+	             (double) panelH / imgH
+	         );
+
+	         int newW = (int) (imgW * scale);
+	         int newH = (int) (imgH * scale);
+
+	         // Center the image
+	         int x = (panelW - newW) / 2;
+	         int y = (panelH - newH) / 2;
+
+	         g.drawImage(backgroundImage, x, y, newW, newH, this);
+	     } else {
+	         g.setColor(getBackground());
+	         g.fillRect(0, 0, getWidth(), getHeight());
+	     }
+	    
+	         // Then draw overlay on top
+	     if (overlayImage != null) {
+	    	    int panelW = getWidth();
+	    	    int panelH = getHeight();
+
+	    	    int imgW = overlayImage.getWidth(this);
+	    	    int imgH = overlayImage.getHeight(this);
+
+	    	    // Keep proportions but make it smaller (e.g. 60% of max possible size)
+	    	    double scale = Math.min(
+	    	        (double) panelW / imgW,
+	    	        (double) panelH / imgH
+	    	    ) * 0.8; // tweak 0.6 → smaller or larger
+
+	    	    int newW = (int) (imgW * scale);
+	    	    int newH = (int) (imgH * scale);
+
+	    	    // Center the overlay
+	    	    int x = (panelW - newW) / 2;
+	    	    int y = (panelH - newH) / 2;
+
+	    	    g.drawImage(overlayImage, x, y, newW, newH, this);
+	    	}
+	    }
+	 
 	public void setPosCelula(Posicao posCelula) {
 		this.posCelula = posCelula;
+	}
+	
+	public void setPresa(String presaNome) {
+		this.presaNome = presaNome;
+	}
+	
+	public String getPresa() {
+		return presaNome;
 	}
 	
 	public Celula getCelula() {
 		return celula;
 	}
+	
+	
 }

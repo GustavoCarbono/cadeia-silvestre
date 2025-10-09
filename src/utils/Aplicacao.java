@@ -11,12 +11,15 @@ import partida.Partida;
 import view.Interface;
 
 public class Aplicacao {
+	Partida partida;
+	
 	public static void main(String[] args) {
+		Partida partida;
 		DAO dao = new DAO();
 		dao.conectar();
 		Minijogo minijogo = new Minijogo();
 		//Escolher animais e nomes dos jogadores
-		
+
 		//----------------------------------------
 		List<Integer> xAlt = new ArrayList<>();
 		List<Integer> comecos = new ArrayList<>();
@@ -31,29 +34,35 @@ public class Aplicacao {
 		
 		// temporario
 		List<Jogador> jogadores = new ArrayList<>();
-		jogadores.add(new Jogador("Alexandre", new Animal(1, "Macaco", "Babuíno", 20, 1, "Alexandre", "/images/AnimaisPrincipais/monkey.png")));
-		jogadores.add(new Jogador("Daniel", new Animal(2, "Ema", "Avestruz", 20, 1, "Daniel", "/images/AnimaisPrincipais/ema.png")));
-		jogadores.add(new Jogador("Emanuel", new Animal(3, "Puma", "Hiena", 20, 1, "Emanuel", "/images/AnimaisPrincipais/puma.png")));
-		jogadores.add(new Jogador("Gustavo", new Animal(4, "Elefante-Pigmeu-de-Bornéu", "Elefante Africano", 20, 1, "Gustavo", "/images/AnimaisPrincipais/elefante.png")));
+		jogadores.add(new Jogador("Alexandre", new Animal(1, "Macaco", "Babuíno", 50, 1, "Alexandre", "/images/AnimaisPrincipais/monkey.png")));
+		jogadores.add(new Jogador("Daniel", new Animal(2, "Ema", "Avestruz", 50, 1, "Daniel", "/images/AnimaisPrincipais/ema.png")));
+		jogadores.add(new Jogador("Emanuel", new Animal(3, "Puma", "Hiena", 50, 1, "Emanuel", "/images/AnimaisPrincipais/puma.png")));
+		jogadores.add(new Jogador("Gustavo", new Animal(4, "Elefante-Pigmeu-de-Bornéu", "Elefante Africano", 50, 1, "Gustavo", "/images/AnimaisPrincipais/elefante.png")));
 		//----------------------------------------
 		
 		Movimentacao mov = new Movimentacao();
-		Partida partida = new Partida(28, jogadores, xAlt, comecos, fins);
+		partida = new Partida(28, jogadores, xAlt, comecos, fins);
+
 		Interface gui = new Interface(partida.getOrdemJogador(), 28, partida);
 		gui.setRolarDados(() -> {
-			if(!partida.getFinalizou()) {
+			if(partida.getFinalizou() != true) {
 				int dado = mov.mover(partida.getOrdemJogador().get(0), partida, dao, gui);//número do dado dentro desse método
+
 				gui.atualizarDados(dado);
+
+					
 				partida.aumentarTurnoAtual();
 				partida.mudarOrdemJogador();
-				if(partida.getTurnoAtual()%8 == 0) {
-					minijogo.comecaMinijogo();
-				}
-			} else {
-				//quando acaba partida
+				
+
 			}
+			
+
 		});
+		
+		
 	}
+
 	
 	
 }

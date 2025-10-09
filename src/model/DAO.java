@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DAO {
-	private Connection con;
+	private static Connection con;
 	private String driver = "com.mysql.cj.jdbc.Driver";
 	private String url = "jdbc:mysql://localhost:3306/dbAnimais";
 	private String user = "root";
@@ -45,7 +45,7 @@ public class DAO {
 		}
 	}
 	
-	public List<PredacaoDAO> buscarPresa(String animal) {// retorna todas as presas do animal
+	public static List<PredacaoDAO> buscarPresa(String animal) {// retorna todas as presas do animal
 		List<PredacaoDAO> predacao = new ArrayList<>();
 		String sql = "SELECT nomePredador, nomePresa, pontosEvolucao FROM tbPredacao WHERE nomePredador = '"+animal+"'";
 		

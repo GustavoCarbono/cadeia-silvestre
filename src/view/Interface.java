@@ -9,12 +9,16 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -22,8 +26,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 
+import model.DAO;
+import model.PredacaoDAO;
 import partida.Animal;
 import partida.Celula;
 import partida.Jogador;
@@ -38,6 +45,9 @@ public class Interface extends JFrame {
 	private JLayeredPane layeredPane = new JLayeredPane();
 	private RolarDados rolarDados;
 	private List<AnimalView> animalJogador;
+	private DAO dao = new DAO();
+	private List<Jogador> jogadores;
+	private Partida partida;
 	
 	private JPanel panel = new JPanel(new GridBagLayout());
 	private JPanel tabuleiro = new JPanel(new GridBagLayout()) { private Image background = new ImageIcon(
@@ -69,7 +79,45 @@ public class Interface extends JFrame {
             new Color(255, 255, 100)
     };
     
+    private Color[] coresCampos = {
+            new Color(255, 170, 170),
+            new Color(170, 255, 170),
+            new Color(170, 170, 255),
+            new Color(255, 255, 170)
+    };
+    
+    
+	private Font bungeeFont;
+    private Font fredokaFont;
+
+    
     public Interface(List<Jogador> jogadores, int x, Partida partida) {
+    	this.jogadores = jogadores;
+    	this.partida = partida;
+    	
+
+    	try {
+    	    // Load font from resources folder inside your project
+    	    bungeeFont = Font.createFont(
+    	        Font.TRUETYPE_FONT,
+    	        getClass().getResourceAsStream("/fontes/Bungee-Regular.ttf")
+    	    );
+    	} catch (Exception e) {
+    	    e.printStackTrace();
+    	    bungeeFont = new Font("SansSerif", Font.PLAIN, 15); // fallback
+    	}
+    	
+    	try {
+    	    // Load font from resources folder inside your project
+    	    fredokaFont = Font.createFont(
+    	        Font.TRUETYPE_FONT,
+    	        getClass().getResourceAsStream("/fontes/LilitaOne-Regular.ttf")
+    	    );
+    	} catch (Exception e) {
+    	    e.printStackTrace();
+    	    fredokaFont = new Font("SansSerif", Font.PLAIN, 15); // fallback
+    	}
+    	
     	configurarJanela();
     	celulas = new CelulaView[x];
     	
@@ -84,8 +132,8 @@ public class Interface extends JFrame {
         
         atualizarInterface();
         
-        subPanel.setPreferredSize(new Dimension((int) (panel.getWidth() * 0.95), (int) (panel.getHeight() * 0.99)));
-        subPanel.setBackground(null);
+        subPanel.setPreferredSize(new Dimension((int) (panel.getWidth() * 0.95), (int) (panel.getHeight() * 0.98)));
+        subPanel.setBackground(new Color(255, 255, 255));
         panel.add(subPanel);
         
         subTabuleiro.setPreferredSize(new Dimension((int) (tabuleiro.getWidth() * 0.99), (int) (tabuleiro.getHeight() * 0.99)));
@@ -113,7 +161,68 @@ public class Interface extends JFrame {
         	celulas[0].addAnimal(animalJogador.get(i));
     	}
         
+
+
+
+        
+        int[] celulasPresas = new int[13];
+        
+
+        celulasPresas[0] = 1;
+        celulasPresas[1] = 3;
+        celulasPresas[2] = 5;
+        celulasPresas[3] = 8;
+        celulasPresas[4] = 10;
+        celulasPresas[5] = 12;
+        celulasPresas[6] = 15;
+        celulasPresas[7] = 17;
+        celulasPresas[8] = 19;
+        celulasPresas[9] = 22;
+        celulasPresas[10] = 24;
+        celulasPresas[11] = 26;
+
+
+        int presasI = 0;
+
+        for (int j = 0; j < 3; j++) { // 5 presas per animal
+            for (int switchPlayer = 0; switchPlayer < 4; switchPlayer++) { // 4 players
+                celulas[celulasPresas[presasI]].setPresa(
+                    DAO.buscarPresa(jogadores.get(switchPlayer).getAnimal().getNome())
+                       .get(j)
+                       .getNomePresa()
+                );
+                celulas[celulasPresas[presasI]].setBackground(new Color(0, 234, 0));
+                presasI++;
+            }
+        }
+        
+        for(int i = 0; i<celulas.length; i++) {
+            celulas[i].setBackgroundImage("/images/fundo/casaComum.png");
+            
+        }
+        
+        celulas[0].setBackgroundImage("/images/fundo/casaInicial.png");
+  
+
+        
+        for(int i = 0; i<celulas.length; i++) {
+        	if(celulas[i].getPresa() == null) {
+        		
+        	}
+        	else {
+        		celulas[i].setBackgroundImage("/images/fundo/casaPresa.png");
+        		celulas[i].setOverlayImage("/images/AnimaisSecundários/" + celulas[i].getPresa() + ".png");
+        	}
+        	
+        }
+        
+
+        
+
+
     }
+    
+
     
     public void configurarJanela() {
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -197,6 +306,7 @@ public class Interface extends JFrame {
 		novaCel.revalidate();
 		novaCel.repaint();
 		SwingUtilities.updateComponentTreeUI(layeredPane);
+
 	    
 	}
     
@@ -204,23 +314,23 @@ public class Interface extends JFrame {
         infoJogo.setBackground(null);
 
         TitledBorder border = BorderFactory.createTitledBorder("Informações");
-        border.setTitleFont(new Font("Arial", Font.BOLD, 21));
+        border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 18f));
         infoJogo.setBorder(border);
 
         numeroRodadoLabel = new JLabel("Início de Jogo", SwingConstants.CENTER);
         jogadorAtualLabel = new JLabel("Jogador atual: " + partida.getOrdemJogador().get(0).getJogador(), SwingConstants.CENTER);
 
-        Font fonte = new Font("Arial", Font.BOLD, 17);
-        numeroRodadoLabel.setFont(fonte);
-        jogadorAtualLabel.setFont(fonte);
+        numeroRodadoLabel.setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
 
+        jogadorAtualLabel.setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
         infoJogo.add(numeroRodadoLabel);
         infoJogo.add(jogadorAtualLabel);
         
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 0, 10, 0);
         gbc.gridy = 0;
         gbc.weightx = 1.0;
-        gbc.weighty = 0.9;
+        gbc.weighty = 0.7;
         gbc.fill = GridBagConstraints.BOTH;
         
         panel.add(infoJogo, gbc);
@@ -236,21 +346,30 @@ public class Interface extends JFrame {
     
     public void addInfoAcoes_subPanel(JPanel panel) {
         TitledBorder border = BorderFactory.createTitledBorder("Ações");
-        border.setTitleFont(new Font("Arial", Font.BOLD, 21));
+        border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 18f));
         acoesJogo.setBorder(border);
 
-        btnDado = new JButton("Rolar Dado");
-        JButton sairJogo = new JButton("Sair");
+        btnDado = new JButton("Rolar o Dado");
+        btnDado.setForeground(Color.WHITE);
+        btnDado.setBackground(new Color(0, 103, 230)); // nice blue
+        btnDado.setFocusPainted(false);
+
         
-        Font fonte = new Font("Arial", Font.BOLD, 15);
-        btnDado.setFont(fonte);
-        sairJogo.setFont(fonte);
+        JButton sairJogo = new JButton("Sair do Jogo");
+        sairJogo.setForeground(Color.WHITE);
+        sairJogo.setBackground(new Color(0, 71, 158)); // nice blue
+        sairJogo.setFocusPainted(false);
+ 
+        
+        btnDado.setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
+        sairJogo.setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
 
         acoesJogo.add(btnDado);
         acoesJogo.add(sairJogo);
         
         acoesJogo.setBackground(null);
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 0, 10, 0);
         gbc.gridy = 1;
         gbc.weighty = 0.9;
 
@@ -271,8 +390,11 @@ public class Interface extends JFrame {
     }
     
     public void atualizarDados(int dado) {
-    	numeroRodadoLabel.setText("O dado rolou o número: " + Integer.toString(dado));;
+        
+        numeroRodadoLabel.setText("O dado rolou o número: " + dado);
     }
+
+
     
 	public void atualizarJogadorAtual(String jogador) {
     	jogadorAtualLabel.setText("Jogador atual: "+jogador);
@@ -282,10 +404,10 @@ public class Interface extends JFrame {
         jogadoresPanel.setBackground(null);
 
         TitledBorder border = BorderFactory.createTitledBorder("Jogadores");
-        border.setTitleFont(new Font("Arial", Font.BOLD, 21));
+        border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 18f));
         jogadoresPanel.setBorder(border);
         GridBagConstraints gbc = new GridBagConstraints();
-        
+        gbc.insets = new Insets(10, 0, 10, 0);
         gbc.gridy = 2;
         gbc.weighty = 1.01;
         gbc.fill = GridBagConstraints.BOTH;
@@ -295,18 +417,28 @@ public class Interface extends JFrame {
         	Animal animal = partida.getJogadores().get(i).getAnimal();
             infoJogadores[i] = new JPanel(new GridLayout(4, 1));
             
-            labelsJogadores[i][0] = new JLabel(partida.getJogadores().get(i).getJogador()); // name
+            labelsJogadores[i][0] = new JLabel("Jogador " + (i + 1) +": " + partida.getJogadores().get(i).getJogador()); // name
             labelsJogadores[i][1] = new JLabel("Animal: " + animal.getNome());
             
             labelsJogadores[i][2] = new JLabel("Pontuação: 0/"+animal.getPontosEvoluir());
             labelsJogadores[i][3] = new JLabel("Casa: 0");
 
-            labelsJogadores[i][0].setFont(new Font("Arial", Font.BOLD, 16));
+
             for (int j = 0; j < partida.getJogadores().size(); j++) {
                 infoJogadores[i].add(labelsJogadores[i][j]);
             }
+            for (int j = 0; j < 1; j++) { 
+            	labelsJogadores[i][j].setFont(fredokaFont.deriveFont(Font.PLAIN, 17f));
+            	infoJogadores[i].add(labelsJogadores[i][j]);
+            }
             
-            infoJogadores[i].setBackground(null);
+            for (int j = 1; j < 4; j++) {
+                labelsJogadores[i][j].setFont(fredokaFont.deriveFont(Font.PLAIN, 14f));
+
+                infoJogadores[i].add(labelsJogadores[i][j]);
+            }
+           
+            infoJogadores[i].setBackground(coresCampos[i]);
             infoJogadores[i].setBorder(BorderFactory.createLineBorder(coresJogadores[i], 3));
             jogadoresPanel.add(infoJogadores[i]);
         }
@@ -315,11 +447,22 @@ public class Interface extends JFrame {
     }
     
     public void atualizarInfoJogador(List<Jogador> jogadoresOrdem, List<Jogador> jogadores) {
+
+    	
+
         for (int i = 0; i < jogadoresOrdem.size(); i++) {
+
+        	
+            	
+             
         	Jogador jogadorFixo = jogadores.get(i);
+    		
+    		
          	labelsJogadores[i][1].setText("Animal: " + jogadorFixo.getAnimal().getNome());
             labelsJogadores[i][2].setText("Pontuação: " + jogadorFixo.getAnimal().getTotalPontos()+"/"+jogadorFixo.getAnimal().getPontosEvoluir());
             labelsJogadores[i][3].setText("Casa: " + jogadorFixo.getAnimal().getX());
+            
+           
         }
         
         atualizarInterface();
@@ -405,13 +548,51 @@ public class Interface extends JFrame {
             posCasa++;
         }
 
-        // Combine: outer, then inner
-        for(int i = 0; i<celulas.length; i++) {
-        	 celulas[i].setBorder(BorderFactory.createLineBorder(new Color(0, 57, 0), 5));
 
-        }
+
                
     }
+
+	public CelulaView getCelula(int x) {
+		// TODO Auto-generated method stub
+		return celulas[x];
+	}
+
+
+
+    public void mostrarMensagemTemporaria(String mensagem, int tempoMs) {
+        final JDialog dialog = new JDialog();
+        dialog.setUndecorated(true);
+        
+        JLabel label = new JLabel(mensagem, SwingConstants.CENTER);
+        label.setFont(fredokaFont.deriveFont(Font.PLAIN, 19f));
+        label.setOpaque(true);
+        label.setBackground(new Color(255, 255, 255, 200)); // semi-transparent black
+        label.setForeground(Color.BLACK);
+
+        Border line = BorderFactory.createLineBorder(new Color(0, 111, 247), 5);
+
+	     // Create padding border
+	     Border padding = BorderFactory.createEmptyBorder(30, 60, 30, 60);
+	
+	     // Combine them
+	     label.setBorder(new CompoundBorder(line, padding));
+        
+        dialog.add(label);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null); // center on screen
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+
+        // Fechar automaticamente após tempoMs milissegundos
+        new javax.swing.Timer(tempoMs, e -> dialog.dispose()).start();
+    }
+
+
+	public void terminarJogo() {
+		System.exit(0);
+		
+	}
     
     
     

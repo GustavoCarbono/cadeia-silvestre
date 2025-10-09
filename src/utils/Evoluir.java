@@ -13,11 +13,12 @@ public class Evoluir {
 		Celula celula = (animal.getCaminho() == 0) 
 				? partida.getTabuleiro().getGridMain(animal.getX()) 
 				: partida.getTabuleiro().getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
-		if(animal.getPontosEvoluir() <= (animal.getTotalPontos()+pontos)) {	//verifica se tem pontos para evoluir
-			int p = animal.getTotalPontos()-animal.getPontosEvoluir();	//pontos restantes para evolução
+		if(animal.getPontosEvoluir() <= (animal.getTotalPontos()+pontos)) {
+
 			evoluir(animal, partida, dao, gui);	//evolui
-			animal.setTotalPontos(pontos-p);	//coloca a sobra dos pontos 
+			animal.setTotalPontos(0);	//coloca a sobra dos pontos 
 			celula.setAnimal(animal, animal.getId());
+			
 		} else {	
 			animal.setTotalPontos(animal.getTotalPontos()+pontos);	//apenas adiciona pontos
 			celula.setAnimal(animal, animal.getId());

@@ -7,6 +7,7 @@ public class Celula {
 	private int caminhoId;
 	private int x;
 	private List<Animal> animais;
+	private String presa;
 	
 	private Celula caminhoAlternativo;
 	private boolean outroCaminho;
@@ -91,5 +92,10 @@ public class Celula {
 		} else {
 			System.out.println("Não tem animal nessa casa");
 		}
+	}
+
+	public String getPresa() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
