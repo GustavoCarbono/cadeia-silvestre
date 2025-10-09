@@ -6,7 +6,7 @@ import partida.Celula;
 import partida.Partida;
 import view.Interface;
 
-public class Predacao {		
+public class Predacao {	
 	public void predacao(Animal animal, Animal presa, Partida partida, int pontos, DAO dao, Interface gui) {
 		Evoluir evoluir = new Evoluir();
 		Celula celula = (animal.getCaminho() == 0) 

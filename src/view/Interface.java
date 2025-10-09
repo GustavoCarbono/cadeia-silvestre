@@ -120,7 +120,7 @@ public class Interface extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(new BorderLayout());
         setBackground(Color.BLACK);
-        setVisible(true);
+        //setVisible(true);
 	}
     
     public void atualizarInterface() {
@@ -413,6 +413,8 @@ public class Interface extends JFrame {
                
     }
     
-    
+    public CelulaView[] getCelulas() {
+    	return celulas;
+    }
     
 }

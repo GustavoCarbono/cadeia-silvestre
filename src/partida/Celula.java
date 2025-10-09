@@ -92,4 +92,13 @@ public class Celula {
 			System.out.println("Não tem animal nessa casa");
 		}
 	}
+	
+	public boolean temJogador() {
+		for(Animal animal : animais) {
+			if(animal.getDono() != null) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

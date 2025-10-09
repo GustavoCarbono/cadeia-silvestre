@@ -16,7 +16,6 @@ public class Aplicacao {
 		dao.conectar();
 		Minijogo minijogo = new Minijogo();
 		//Escolher animais e nomes dos jogadores
-		
 		//----------------------------------------
 		List<Integer> xAlt = new ArrayList<>();
 		List<Integer> comecos = new ArrayList<>();
@@ -27,19 +26,22 @@ public class Aplicacao {
 		fins.add(10);//acaba na casa 10 do caminho principal
 		xAlt.add(6);
 		comecos.add(10);
+		
 		fins.add(17);
 		
 		// temporario
 		List<Jogador> jogadores = new ArrayList<>();
-		jogadores.add(new Jogador("Alexandre", new Animal(1, "Macaco", "Babuíno", 20, 1, "Alexandre", "/images/AnimaisPrincipais/monkey.png")));
-		jogadores.add(new Jogador("Daniel", new Animal(2, "Ema", "Avestruz", 20, 1, "Daniel", "/images/AnimaisPrincipais/ema.png")));
-		jogadores.add(new Jogador("Emanuel", new Animal(3, "Puma", "Hiena", 20, 1, "Emanuel", "/images/AnimaisPrincipais/puma.png")));
-		jogadores.add(new Jogador("Gustavo", new Animal(4, "Elefante-Pigmeu-de-Bornéu", "Elefante Africano", 20, 1, "Gustavo", "/images/AnimaisPrincipais/elefante.png")));
+		jogadores.add(new Jogador("Alexandre", new Animal(IdUnica.getIdUnico(), "macaco", "babuíno", 20, 1, "Alexandre", "/images/AnimaisPrincipais/monkey.png")));
+		jogadores.add(new Jogador("Daniel", new Animal(IdUnica.getIdUnico(), "ema", "avestruz", 20, 1, "Daniel", "/images/AnimaisPrincipais/ema.png")));
+		jogadores.add(new Jogador("Carlos", new Animal(IdUnica.getIdUnico(), "puma", "hiena", 20, 1, "Carlos", "/images/AnimaisPrincipais/puma.png")));
+		jogadores.add(new Jogador("Gustavo", new Animal(IdUnica.getIdUnico(), "elefante pequeno", "elefante africano", 20, 1, "Gustavo", "/images/AnimaisPrincipais/elefante.png")));
 		//----------------------------------------
-		
 		Movimentacao mov = new Movimentacao();
 		Partida partida = new Partida(28, jogadores, xAlt, comecos, fins);
 		Interface gui = new Interface(partida.getOrdemJogador(), 28, partida);
+		AdicionarPresas adicionarPresas = new AdicionarPresas();
+		adicionarPresas.addPresas(partida, gui, dao);
+		
 		gui.setRolarDados(() -> {
 			if(!partida.getFinalizou()) {
 				int dado = mov.mover(partida.getOrdemJogador().get(0), partida, dao, gui);//número do dado dentro desse método
