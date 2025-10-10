@@ -127,7 +127,7 @@ public class Interface extends JFrame {
         tabuleiro.setPreferredSize(new Dimension((int) (getHeight() * 1.32), getHeight()));
         add(tabuleiro, BorderLayout.WEST);
     	
-    	panel.setBackground(new Color(255, 255, 255));
+    	panel.setBackground(new Color(0, 122, 53));
         add(panel, BorderLayout.CENTER);
         
         atualizarInterface();
@@ -327,7 +327,7 @@ public class Interface extends JFrame {
         infoJogo.add(jogadorAtualLabel);
         
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 10, 0);
+        gbc.insets = new Insets(10, 5, 10, 5);
         gbc.gridy = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 0.7;
@@ -351,13 +351,13 @@ public class Interface extends JFrame {
 
         btnDado = new JButton("Rolar o Dado");
         btnDado.setForeground(Color.WHITE);
-        btnDado.setBackground(new Color(0, 103, 230)); // nice blue
+        btnDado.setBackground(new Color(0, 191, 83)); // nice blue
         btnDado.setFocusPainted(false);
 
         
         JButton sairJogo = new JButton("Sair do Jogo");
         sairJogo.setForeground(Color.WHITE);
-        sairJogo.setBackground(new Color(0, 71, 158)); // nice blue
+        sairJogo.setBackground(new Color(0, 122, 53)); // nice blue
         sairJogo.setFocusPainted(false);
  
         
@@ -369,7 +369,7 @@ public class Interface extends JFrame {
         
         acoesJogo.setBackground(null);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 10, 0);
+        gbc.insets = new Insets(10, 5, 10, 5);
         gbc.gridy = 1;
         gbc.weighty = 0.9;
 
@@ -407,7 +407,7 @@ public class Interface extends JFrame {
         border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 18f));
         jogadoresPanel.setBorder(border);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 10, 0);
+        gbc.insets = new Insets(10, 5, 10, 5);
         gbc.gridy = 2;
         gbc.weighty = 1.01;
         gbc.fill = GridBagConstraints.BOTH;

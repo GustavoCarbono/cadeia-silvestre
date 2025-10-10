@@ -69,7 +69,7 @@ public class Movimentacao {
 	                new javax.swing.Timer(2000, evt -> {
 
 	                	if(jogadorAtual.getAnimal().getPontosEvoluir() == 100) {
-	                		 	gui.mostrarMensagemTemporaria("Jogador " + partida.getJogadores().get(iGlobal.getI()).getJogador() + " evoluiu! O jogo terminou." , 3000);
+	                		 	gui.mostrarMensagemTemporaria("O jogador " + partida.getJogadores().get(iGlobal.getI()).getJogador() + " evoluiu! O jogo terminou." , 3000);
 	                		 	
 	                		 	new javax.swing.Timer(3000, ev -> {
 	                	            gui.terminarJogo();
@@ -147,10 +147,14 @@ public class Movimentacao {
 			if (celula.getCaminhoId() == 0) {
 				celula.removeAnimal(animal.getId());// remove o animal do quadrado
 				animal.setX(pos-count+1);//atualiza o dado da posicao do animal
+				gui.mostrarMensagemTemporaria(
+			            "O jogador " + animal.getDono() + " completou uma volta! +10 pontos!", 
+			            2000 // 2 seconds
+			        );
 				System.out.println("o animal "+animal.getNome()+" deu uma volta");
 				// coloca o animal no novo quadrado
 				tabuleiro.getGridMain(0).addAnimal(animal);
-				evoluir.evoluir(animal, partida, dao, gui);
+				evoluir.aumentarPontos(animal, partida, 10, dao, gui);
 				
 				gui.atualizarImg(animal, partida);
 				gui.pegarCelulaView(animal, celula, tabuleiro.getGridMain(0));
