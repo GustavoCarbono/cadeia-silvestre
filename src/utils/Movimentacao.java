@@ -22,7 +22,7 @@ public class Movimentacao {
 		Evoluir evoluir = new Evoluir();
 		Tabuleiro tabuleiro = partida.getTabuleiro();
 		
-		numRdm = rdm.nextInt(6)+10; // dado 1 a 6
+		numRdm = rdm.nextInt(6)+1; // dado 1 a 6
 		Animal animal = jogador.getAnimal();
 		
 		Celula celula = (animal.getCaminho() == 0) 
@@ -50,7 +50,7 @@ public class Movimentacao {
 	            
 				gui.desbloquearBotao();
 	            gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
-	            //comportar.validarComportamento(animal, partida, dao, gui);
+	            comportar.validarComportamento(animal, partida.getTabuleiro().getGridMain(animal.getX()), partida, dao, gui);
 	            gui.atualizarJogadorAtual(partida.getOrdemJogador().get(0).getJogador());
 	            return;
 	        }

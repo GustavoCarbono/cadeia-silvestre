@@ -18,9 +18,6 @@ public class AdicionarPresas {
 	
 	public void setListaPresas(Partida partida, DAO dao) {
 		List<Animal> listaAnimal = new ArrayList<>();
-		for(Jogador jogador1 : partida.getJogadores()) {
-			System.out.println(jogador1.getJogador());
-		}
 		
 		for(Jogador jogador : partida.getJogadores()) {
 			Animal animal = jogador.getAnimal();
@@ -30,13 +27,13 @@ public class AdicionarPresas {
 				selecionado.add(presa.getNomePresa());
 			}
 			Collections.shuffle(selecionado);
-			for(int i=0; i<5; i++) {
-				System.out.println("Jogador"+jogador.getJogador()+" tem Animal " + selecionado.get(i)+" tem index "+dao.buscarAnimal(selecionado.get(i)).getImg());
+			for(int i=0; i<6; i++) {
 				Animal animalNovo = new Animal(IdUnica.getIdUnico(), selecionado.get(i), dao.buscarAnimal(selecionado.get(i)).getImg());
 				listaAnimal.add(animalNovo);
 				
 			}
 		}
+		Collections.shuffle(listaAnimal);
 		animais = listaAnimal;
 	}
 	
@@ -46,9 +43,12 @@ public class AdicionarPresas {
 		for(int i=0; i<28; i++) {
 			Celula celula = partida.getTabuleiro().getGridMain(i);
 			if(!celula.temJogador()) {
-				celula.addAnimal(animais.get(j));
-				gui.getCelulas()[i].addAnimal(new AnimalView(animais.get(j), (gui.getCelulas()[i].getWidth() / 2) - 10, (gui.getCelulas()[i].getWidth() / 2) - 10));
-				j++;
+				if(j<20) {
+					celula.addAnimal(animais.get(j));
+					gui.getCelulas()[i].addAnimal(new AnimalView(animais.get(j), (gui.getCelulas()[i].getWidth() / 2) - 10, (gui.getCelulas()[i].getWidth() / 2) - 10));
+					j++;
+				}
+				
 			}
 		}
 	}

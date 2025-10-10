@@ -21,6 +21,7 @@ public class Evoluir {
 		} else {	
 			animal.setTotalPontos(animal.getTotalPontos()+pontos);	//apenas adiciona pontos
 			celula.setAnimal(animal, animal.getId());
+			gui.atualizarImg(animal, partida);
 		}
 	}
 	
@@ -36,6 +37,7 @@ public class Evoluir {
 		animal.setTotalPontos(0);
 		celula.setAnimal(animal, animal.getId());//aplica no tabuleiro
 		gui.atualizarImg(animal, partida);
+		gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
 		//método para atualizar a interface
 		if(animal.getEvolucao() == null) {
 			System.out.println("acabou");

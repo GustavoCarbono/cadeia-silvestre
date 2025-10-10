@@ -34,7 +34,7 @@ public class Aplicacao {
 		jogadores.add(new Jogador("Alexandre", new Animal(IdUnica.getIdUnico(), "macaco", "babuíno", 20, 1, "Alexandre", "/images/AnimaisPrincipais/monkey.png")));
 		jogadores.add(new Jogador("Daniel", new Animal(IdUnica.getIdUnico(), "ema", "avestruz", 20, 1, "Daniel", "/images/AnimaisPrincipais/ema.png")));
 		jogadores.add(new Jogador("Carlos", new Animal(IdUnica.getIdUnico(), "puma", "hiena", 20, 1, "Carlos", "/images/AnimaisPrincipais/puma.png")));
-		jogadores.add(new Jogador("Gustavo", new Animal(IdUnica.getIdUnico(), "elefante pequeno", "elefante africano", 20, 1, "Gustavo", "/images/AnimaisPrincipais/elefante.png")));
+		jogadores.add(new Jogador("Gustavo", new Animal(IdUnica.getIdUnico(), "Elefante-Pigmeu-de-Bornéu", "elefante africano", 20, 1, "Gustavo", "/images/AnimaisPrincipais/elefante.png")));
 		//----------------------------------------
 		Movimentacao mov = new Movimentacao();
 		Partida partida = new Partida(28, jogadores, xAlt, comecos, fins);

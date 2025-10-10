@@ -13,6 +13,7 @@ public class Predacao {
 			? partida.getTabuleiro().getGridMain(animal.getX()) 
 			: partida.getTabuleiro().getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
 		celula.removeAnimal(presa.getId());//remove animal do tabuleiro
+		gui.pegarCelula(celula).removeAnimal(presa.getId());
 		evoluir.aumentarPontos(animal, partida, pontos, dao, gui);
 	}
 }
