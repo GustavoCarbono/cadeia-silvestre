@@ -1,6 +1,8 @@
 CREATE DATABASE dbAnimais;
 USE dbAnimais;
 
+
+
 -- área perigosa
 drop table tbAnimais;
 drop table tbPredacao;
@@ -68,27 +70,22 @@ INSERT INTO tbAnimais (nomeAnimal, nivel, img) VALUES
 ('tatu', 0, '/images/AnimaisSegundários/tatu.png'),
 ('urso', 0, '/images/AnimaisSegundários/urso.png');
 
+
 -- macaco
 INSERT INTO tbPredacao (nomePredador, nomePresa, pontosEvolucao) VALUES
-('macaco', 'esquilo', 10),
-('macaco', 'muda', 10),
-('macaco', 'cobra', 10),
+('macaco', 'lagarto', 10),
 ('macaco', 'gafanhoto', 10),
 ('macaco', 'lagarta', 10);
 
 -- ema
 INSERT INTO tbPredacao (nomePredador, nomePresa, pontosEvolucao) VALUES
-('ema', 'pombo', 10),
 ('ema', 'gafanhoto', 10),
 ('ema', 'lagarta', 10),
-('ema', 'tatu', 10),
 ('ema', 'minhoca', 10);
 
 -- puma
 INSERT INTO tbPredacao (nomePredador, nomePresa, pontosEvolucao) VALUES
 ('puma', 'coelho', 10),
-('puma', 'cervo', 10),
-('puma', 'tatu', 10),
 ('puma', 'ovelha', 10),
 ('puma', 'sapo', 10);
 
@@ -96,6 +93,4 @@ INSERT INTO tbPredacao (nomePredador, nomePresa, pontosEvolucao) VALUES
 INSERT INTO tbPredacao (nomePredador, nomePresa, pontosEvolucao) VALUES
 ('Elefante-Pigmeu-de-Bornéu', 'galinha', 10),
 ('Elefante-Pigmeu-de-Bornéu', 'minhoca', 10),
-('Elefante-Pigmeu-de-Bornéu', 'tatu', 10),
-('Elefante-Pigmeu-de-Bornéu', 'lagarta', 10),
-('Elefante-Pigmeu-de-Bornéu', 'pombo', 10);
+('Elefante-Pigmeu-de-Bornéu', 'lagarta', 10)

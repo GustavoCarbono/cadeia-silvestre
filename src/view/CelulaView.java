@@ -19,6 +19,7 @@ public class CelulaView extends JPanel {
 	private Celula celula;
 	private List<AnimalView> animais;
 	private String presaNome;
+	private String predadorNome;
 	private Image backgroundImage;
 	private Image overlayImage;
 	public CelulaView(int posX, int posY, int width, int height, Celula celula) {
@@ -110,7 +111,7 @@ public class CelulaView extends JPanel {
 	         int imgW = backgroundImage.getWidth(this);
 	         int imgH = backgroundImage.getHeight(this);
 
-	         // Calculate scale to cover the panel (may crop slightly)
+	 
 	         double scale = Math.max(
 	             (double) panelW / imgW,
 	             (double) panelH / imgH
@@ -119,7 +120,7 @@ public class CelulaView extends JPanel {
 	         int newW = (int) (imgW * scale);
 	         int newH = (int) (imgH * scale);
 
-	         // Center the image
+
 	         int x = (panelW - newW) / 2;
 	         int y = (panelH - newH) / 2;
 
@@ -129,7 +130,6 @@ public class CelulaView extends JPanel {
 	         g.fillRect(0, 0, getWidth(), getHeight());
 	     }
 	    
-	         // Then draw overlay on top
 	     if (overlayImage != null) {
 	    	    int panelW = getWidth();
 	    	    int panelH = getHeight();
@@ -137,11 +137,10 @@ public class CelulaView extends JPanel {
 	    	    int imgW = overlayImage.getWidth(this);
 	    	    int imgH = overlayImage.getHeight(this);
 
-	    	    // Keep proportions but make it smaller (e.g. 60% of max possible size)
 	    	    double scale = Math.min(
 	    	        (double) panelW / imgW,
 	    	        (double) panelH / imgH
-	    	    ) * 0.8; // tweak 0.6 → smaller or larger
+	    	    ) * 0.8;
 
 	    	    int newW = (int) (imgW * scale);
 	    	    int newH = (int) (imgH * scale);
@@ -169,6 +168,15 @@ public class CelulaView extends JPanel {
 	public Celula getCelula() {
 		return celula;
 	}
+
+	public String getPredadorNome() {
+		return predadorNome;
+	}
+
+	public void setPredadorNome(String predadorNome) {
+		this.predadorNome = predadorNome;
+	}
+	
 	
 	
 }

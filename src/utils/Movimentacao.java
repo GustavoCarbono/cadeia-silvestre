@@ -52,12 +52,12 @@ public class Movimentacao {
 	            
 
 
-	            Animal animal1 = partida.getJogadores().get(iGlobal.getI()).getAnimal();
+	            Animal animalAtual = partida.getJogadores().get(iGlobal.getI()).getAnimal();
 	          
             	Jogador jogadorAtual = partida.getJogadores().get(iGlobal.getI());
 
-            	
-	            String presaCelula = gui.getCelula(animal1.getX()).getPresa(); // get prey from current cell
+            	String predadorCelula = gui.getCelula(animalAtual.getX()).getPredadorNome();
+	            String presaCelula = gui.getCelula(animalAtual.getX()).getPresa(); // get prey from current cell
 	            if (presaCelula != null) {
 	     
 	            	evoluir.aumentarPontos(animal, partida, 5, dao, gui);
@@ -69,9 +69,9 @@ public class Movimentacao {
 	                new javax.swing.Timer(2000, evt -> {
 
 	                	if(jogadorAtual.getAnimal().getPontosEvoluir() == 100) {
-	                		 	gui.mostrarMensagemTemporaria("O jogador " + partida.getJogadores().get(iGlobal.getI()).getJogador() + " evoluiu! O jogo terminou." , 3000);
+	                		 	gui.mostrarMensagemTemporaria("O jogador " + partida.getJogadores().get(iGlobal.getI()).getJogador() + " evoluiu! O jogo terminou." , 7000);
 	                		 	
-	                		 	new javax.swing.Timer(3000, ev -> {
+	                		 	new javax.swing.Timer(7000, ev -> {
 	                	            gui.terminarJogo();
 	                	            ((javax.swing.Timer) ev.getSource()).stop();
 	                	        }).start();
@@ -82,10 +82,37 @@ public class Movimentacao {
 		                    gui.atualizarJogadorAtual(partida.getOrdemJogador().get(0).getJogador());
 	                	}
 	                    iGlobal.setI(iGlobal.getI() + 1);
-	                  ((javax.swing.Timer) evt.getSource()).stop(); // stop the timer after running once
+	                  ((Timer) evt.getSource()).stop(); 
 	                }).start();
 	                
-	            } else {
+	            } 
+	            
+	            else if (predadorCelula != null) {
+	            	if(animalAtual.getTotalPontos() == 0) {
+	            		gui.mostrarMensagemTemporaria("O jogador " + jogadorAtual.getJogador() + " foi capturado, porém não tinha nada a perder...", 2000);
+	            	}
+	            	else if(animalAtual.getTotalPontos() <= 3) {
+	            		animalAtual.setTotalPontos(0);
+	            		gui.mostrarMensagemTemporaria("O jogador " + jogadorAtual.getJogador() + " foi capturado e leveram tudo o que tinha..", 2000);
+	            	}
+	            	else {
+	            	animalAtual.setTotalPontos( jogador.getAnimal().getTotalPontos() - 3);
+	            	gui.mostrarMensagemTemporaria("O jogador " + jogadorAtual.getJogador() + " foi capturado. -3 pontos...", 2000);
+	            	}
+	            	
+	            	new javax.swing.Timer(2000, evt -> {
+	            	iGlobal.setI(iGlobal.getI() + 1);
+		            	gui.desbloquearBotao();
+	                    gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
+	                    gui.atualizarJogadorAtual(partida.getOrdemJogador().get(0).getJogador());
+	                    ((Timer)evt.getSource()).stop();
+	                    
+	            	}).start();
+
+	            }
+	            
+	            
+	            else {
 		            	iGlobal.setI(iGlobal.getI() + 1);
 		                gui.desbloquearBotao();
 		                gui.atualizarInfoJogador(partida.getOrdemJogador(), partida.getJogadores());
@@ -145,12 +172,22 @@ public class Movimentacao {
 		
 		if (celula.getX() == ultimaPos.getX() && !entrar) {
 			if (celula.getCaminhoId() == 0) {
+				Jogador jogadorAtual = partida.getJogadores().get(iGlobal.getI());
 				celula.removeAnimal(animal.getId());// remove o animal do quadrado
 				animal.setX(pos-count+1);//atualiza o dado da posicao do animal
-				gui.mostrarMensagemTemporaria(
+				gui.mostrarMensagemTemporaria2(
 			            "O jogador " + animal.getDono() + " completou uma volta! +10 pontos!", 
 			            2000 // 2 seconds
 			        );
+				
+				if(jogadorAtual.getAnimal().getPontosEvoluir() == 100) {
+        		 	gui.mostrarMensagemTemporaria("O jogador " + partida.getJogadores().get(iGlobal.getI()).getJogador() + " evoluiu! O jogo terminou." , 7000);
+        		 	
+        		 	new javax.swing.Timer(7000, ev -> {
+        	            gui.terminarJogo();
+        	            ((javax.swing.Timer) ev.getSource()).stop();
+        	        }).start();
+        	}
 				System.out.println("o animal "+animal.getNome()+" deu uma volta");
 				// coloca o animal no novo quadrado
 				tabuleiro.getGridMain(0).addAnimal(animal);

@@ -127,7 +127,7 @@ public class Interface extends JFrame {
         tabuleiro.setPreferredSize(new Dimension((int) (getHeight() * 1.32), getHeight()));
         add(tabuleiro, BorderLayout.WEST);
     	
-    	panel.setBackground(new Color(0, 122, 53));
+    	panel.setBackground(new Color(0, 138, 255));
         add(panel, BorderLayout.CENTER);
         
         atualizarInterface();
@@ -161,9 +161,28 @@ public class Interface extends JFrame {
         	celulas[0].addAnimal(animalJogador.get(i));
     	}
         
-
-
-
+        for(int i = 0; i<celulas.length; i++) {
+            celulas[i].setBackgroundImage("/images/fundo/casaComum.png");
+            
+        }
+        
+        String[] predadores = new String[4];
+        predadores[0] = "leao";
+        predadores[1] = "gorila";
+        predadores[2] = "rinoceronte";
+        predadores[3] = "hipopotamo";
+        int[] celulasPredadores = new int[4];
+        
+        celulasPredadores[0] = 4;
+        celulasPredadores[1] = 11;
+        celulasPredadores[2] = 18;
+        celulasPredadores[3] = 25;
+        
+        for(int i = 0; i<celulasPredadores.length; i++) {
+        	celulas[celulasPredadores[i]].setPredadorNome(predadores[i]);
+        	celulas[celulasPredadores[i]].setBackgroundImage("/images/fundo/casaPredador.png");
+        	celulas[celulasPredadores[i]].setOverlayImage("/images/animaisSecundários/" + celulas[celulasPredadores[i]].getPredadorNome() + ".png");
+        }
         
         int[] celulasPresas = new int[13];
         
@@ -196,10 +215,7 @@ public class Interface extends JFrame {
             }
         }
         
-        for(int i = 0; i<celulas.length; i++) {
-            celulas[i].setBackgroundImage("/images/fundo/casaComum.png");
-            
-        }
+
         
         celulas[0].setBackgroundImage("/images/fundo/casaInicial.png");
   
@@ -351,13 +367,13 @@ public class Interface extends JFrame {
 
         btnDado = new JButton("Rolar o Dado");
         btnDado.setForeground(Color.WHITE);
-        btnDado.setBackground(new Color(0, 191, 83)); // nice blue
+        btnDado.setBackground(new Color(0, 138, 255)); // nice blue
         btnDado.setFocusPainted(false);
 
         
         JButton sairJogo = new JButton("Sair do Jogo");
         sairJogo.setForeground(Color.WHITE);
-        sairJogo.setBackground(new Color(0, 122, 53)); // nice blue
+        sairJogo.setBackground(new Color(0, 108, 255)); // nice blue
         sairJogo.setFocusPainted(false);
  
         
@@ -567,12 +583,12 @@ public class Interface extends JFrame {
         JLabel label = new JLabel(mensagem, SwingConstants.CENTER);
         label.setFont(fredokaFont.deriveFont(Font.PLAIN, 19f));
         label.setOpaque(true);
-        label.setBackground(new Color(255, 255, 255, 200)); // semi-transparent black
+        label.setBackground(new Color(255, 255, 255, 200));
         label.setForeground(Color.BLACK);
 
         Border line = BorderFactory.createLineBorder(new Color(0, 111, 247), 5);
 
-	     // Create padding border
+	
 	     Border padding = BorderFactory.createEmptyBorder(30, 60, 30, 60);
 	
 	     // Combine them
@@ -580,11 +596,43 @@ public class Interface extends JFrame {
         
         dialog.add(label);
         dialog.pack();
-        dialog.setLocationRelativeTo(null); // center on screen
+        dialog.setLocationRelativeTo(null); 
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
 
-        // Fechar automaticamente após tempoMs milissegundos
+
+        new javax.swing.Timer(tempoMs, e -> dialog.dispose()).start();
+    }
+    
+    public void mostrarMensagemTemporaria2(String mensagem, int tempoMs) {
+        final JDialog dialog = new JDialog();
+        dialog.setUndecorated(true);
+        
+        JLabel label = new JLabel(mensagem, SwingConstants.CENTER);
+        label.setFont(fredokaFont.deriveFont(Font.PLAIN, 19f));
+        label.setOpaque(true);
+        label.setBackground(new Color(255, 255, 255, 200));
+        label.setForeground(Color.BLACK);
+
+        Border line = BorderFactory.createLineBorder(new Color(0, 111, 247), 5);
+        Border padding = BorderFactory.createEmptyBorder(30, 60, 30, 60);
+        label.setBorder(new CompoundBorder(line, padding));
+        
+        dialog.add(label);
+        dialog.pack();
+
+
+        int screenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+        int screenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+
+
+        int x = (screenWidth - dialog.getWidth()) / 2;
+        int y = (screenHeight - dialog.getHeight()) / 2 - 200;
+        dialog.setLocation(x, y);
+
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+
         new javax.swing.Timer(tempoMs, e -> dialog.dispose()).start();
     }
 
