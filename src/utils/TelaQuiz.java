@@ -13,15 +13,6 @@ import java.util.List;
 import java.util.Random;
 
 public class TelaQuiz extends JDialog {
-	public interface QuizListener {
-	    void onQuizFinished(boolean acertou);
-	}
-	
-	private QuizListener listener;
-
-	public void setQuizListener(QuizListener listener) {
-	    this.listener = listener;
-	}
 	
     private JButton[] alternativasBtns = new JButton[4];
     public static class Pergunta {

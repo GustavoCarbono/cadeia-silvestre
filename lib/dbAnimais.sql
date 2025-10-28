@@ -1,11 +1,6 @@
 CREATE DATABASE dbAnimais;
+
 USE dbAnimais;
-
-
-
-SELECT * FROM tbAnimais;
-SELECT * FROM tbPredacao;
-
 
 CREATE TABLE tbAnimais (
     nomeAnimal VARCHAR(30) PRIMARY KEY,
@@ -16,17 +11,27 @@ CREATE TABLE tbAnimais (
     FOREIGN KEY (evolucao) REFERENCES tbAnimais(nomeAnimal)
 );
 
+CREATE TABLE tbPredacao (
+	idPredacao INT PRIMARY KEY AUTO_INCREMENT,
+    nomePredador VARCHAR(30) NOT NULL,
+    nomePresa VARCHAR(30) NOT NULL,
+    pontosEvolucao INT NOT NULL,
+    FOREIGN KEY (nomePredador) REFERENCES tbAnimais(nomeAnimal),
+    FOREIGN KEY (nomePresa) REFERENCES tbAnimais(nomeAnimal)
+);
+
+
 INSERT INTO tbAnimais (nomeAnimal, nivel, img) VALUES
 ('TRex', 5, '/images/AnimaisPrincipais/gen4/trex.png'),
 ('Fenix', 5, '/images/AnimaisPrincipais/gen4/fenix.png'),
 ('Leão', 5, '/images/AnimaisPrincipais/gen4/leao.png'),
-('Lobo-Terrivel', 5, '/images/AnimaisPrincipais/gen4/lobo-terrivel.png');
+('Lobo-Terrivel', 5, '/images/AnimaisPrincipais/gen4/loboterrivel.png');
 
 INSERT INTO tbAnimais (nomeAnimal, evolucao, evoluirPontos, nivel, img) VALUES
 ('Crocodilo', 'TRex', 20, 4, '/images/AnimaisPrincipais/gen3/crocodilo.png'),
 ('Harpia', 'Fenix', 20, 4, '/images/AnimaisPrincipais/gen3/harpia.png'),
 ('Jaguar', 'Leão', 20, 4, '/images/AnimaisPrincipais/gen3/jaguar.png'),
-('Lobo', 'Lobo-Terrível', 20, 4, '/images/AnimaisPrincipais/gen3/lobo.png');
+('Lobo', 'Lobo-Terrivel', 20, 4, '/images/AnimaisPrincipais/gen3/lobo.png');
 
 INSERT INTO tbAnimais (nomeAnimal, evolucao, evoluirPontos, nivel, img) VALUES
 ('Serpente', 'Crocodilo', 20, 3, '/images/AnimaisPrincipais/gen2/serpente.png'),
@@ -83,16 +88,6 @@ INSERT INTO tbAnimais (nomeAnimal, nivel, img) VALUES
 ('Lebre', 3, '/images/AnimaisSegundários/lebre.png'),
 ('Veado', 3, '/images/AnimaisSegundários/veado.png'),
 ('Javali', 3, '/images/AnimaisSegundários/javali.png');
-
-
-CREATE TABLE tbPredacao (
-	idPredacao INT PRIMARY KEY AUTO_INCREMENT,
-    nomePredador VARCHAR(30) NOT NULL,
-    nomePresa VARCHAR(30) NOT NULL,
-    pontosEvolucao INT NOT NULL,
-    FOREIGN KEY (nomePredador) REFERENCES tbAnimais(nomeAnimal),
-    FOREIGN KEY (nomePresa) REFERENCES tbAnimais(nomeAnimal)
-);
 
 -- Camaleão
 INSERT INTO tbPredacao (nomePredador, nomePresa, pontosEvolucao) VALUES
@@ -244,6 +239,4 @@ INSERT INTO tbPredacao (nomePredador, nomePresa, pontosEvolucao) VALUES
 ('Lobo', 'veado', 10),
 ('Lobo', 'porco', 10);
 
--- área perigosa
-drop table tbAnimais;
-drop table tbPredacao;
+

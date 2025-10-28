@@ -53,7 +53,7 @@ public class Movimentacao {
 	    timer.addActionListener(e -> {
 	        if (passos[0] <= 0) {
 	            ((Timer) e.getSource()).stop();
-	        	
+
 	            boolean partidaAcabou = false; 
           		int delay = 500;
 	    		
@@ -132,17 +132,15 @@ public class Movimentacao {
 	      		    quiz.setLocationRelativeTo(gui);
 
 	      		}
-	        
-            
 	      		//prevenção pra erro na evolução por dar voltas no tabuleiro. se o animal dessse uma volta que o levasse a evoluir e depois caisse numa casa de predador, o animal evoluiria mesmo com a quantidade de pontos inferior ao necessario
 
-	            if(animal.getPontosEvoluir() <= animal.getTotalPontos()) {		   
+	      		else if (animal.getPontosEvoluir() <= animal.getTotalPontos()) {		   
 	           		 partidaAcabou = evoluir.aumentarPontos(animal, partida, 0, dao, gui);
 	           		 delay = 3000;
 	           	}
 	
 		        if(partidaAcabou == true) {
-		            gui.mostrarMensagemTemporaria("O jogador " + animal.getDono() + " evoluiu para " + animal.getNome() + " e ganhou o jogo!", 90000, new Color(0, 0, 153), 3);
+		        	gui.mostrarTelaDeVitoria(animal);	            
 		        }
 		        
 		        else {

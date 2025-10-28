@@ -19,6 +19,7 @@ public class Aplicacao {
             DAO dao = new DAO();
             dao.conectar();
 
+      
             List<Integer> xAlt = new ArrayList<>();
             List<Integer> comecos = new ArrayList<>();
             List<Integer> fins = new ArrayList<>();

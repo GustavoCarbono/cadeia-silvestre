@@ -100,25 +100,23 @@ public class Interface extends JFrame {
     	
 
     	try {
-    	    // Load font from resources folder inside your project
     	    bungeeFont = Font.createFont(
     	        Font.TRUETYPE_FONT,
     	        getClass().getResourceAsStream("/fontes/Bungee-Regular.ttf")
     	    );
     	} catch (Exception e) {
     	    e.printStackTrace();
-    	    bungeeFont = new Font("SansSerif", Font.PLAIN, 15); // fallback
+    	    bungeeFont = new Font("SansSerif", Font.PLAIN, 15); 
     	}
     	
     	try {
-    	    // Load font from resources folder inside your project
     	    fredokaFont = Font.createFont(
     	        Font.TRUETYPE_FONT,
     	        getClass().getResourceAsStream("/fontes/LilitaOne-Regular.ttf")
     	    );
     	} catch (Exception e) {
     	    e.printStackTrace();
-    	    fredokaFont = new Font("SansSerif", Font.PLAIN, 15); // fallback
+    	    fredokaFont = new Font("SansSerif", Font.PLAIN, 15);
     	}
     	
     	configurarJanela();
@@ -347,7 +345,7 @@ public class Interface extends JFrame {
         
         btnDado = new JButton("Rolar Dado", dadoIcon);
         btnDado.setForeground(Color.WHITE);
-        btnDado.setBackground(new Color(48, 176, 255)); // nice blue
+        btnDado.setBackground(new Color(48, 176, 255)); 
         btnDado.setFocusPainted(false);
         
         btnDado.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -357,7 +355,7 @@ public class Interface extends JFrame {
         
         JButton sairJogo = new JButton("Sair do Jogo");
         sairJogo.setForeground(Color.WHITE);
-        sairJogo.setBackground(new Color(2, 151, 244)); // nice blue
+        sairJogo.setBackground(new Color(2, 151, 244)); 
         sairJogo.setFocusPainted(false);
  
         
@@ -471,7 +469,7 @@ public class Interface extends JFrame {
     }
     
     public void preencherTabuleiro(JPanel tabuleiro, Partida partida) {
-    	//nem eu entendo isso, só sei que calcula o valor certo pra dimensionar o tamanho da celula e ficar tudo no meio
+    	//calcula o valor certo pra dimensionar o tamanho da celula e ficar tudo no meio
 
         int gap = 2; //espaço entre as celulas
         int rows = 7; //qtd de celulas em uma fileira
@@ -579,12 +577,10 @@ public class Interface extends JFrame {
 	    dialog.pack();
 	    dialog.setAlwaysOnTop(true);
 
-	    // --- Position control ---
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	    int dialogWidth = dialog.getWidth();
 	    int dialogHeight = dialog.getHeight();
 
-	    // Base (normal) centered position
 	    int x = (screenSize.width - dialogWidth) / 2;
 	    int y = (screenSize.height - dialogHeight) / 2;
 
@@ -595,11 +591,99 @@ public class Interface extends JFrame {
 	    dialog.setLocation(x, y);
 	    dialog.setVisible(true);
 
-	    // --- Auto-close timer ---
+
 	    new Timer(tempoMs, e -> dialog.dispose()).start();
 	}
 
-    
+	public void mostrarTelaDeVitoria(Animal animal) {
+	    final JDialog dialog = new JDialog();
+	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+	    dialog.setAlwaysOnTop(true);
+	    dialog.getContentPane().setBackground(Color.white);
+	    dialog.setUndecorated(true);
+
+	    JPanel panel = new JPanel(new GridBagLayout());
+	    Border lineP = BorderFactory.createLineBorder(new Color(255, 216, 44), 8);
+	    Border paddingP = BorderFactory.createEmptyBorder(30, 60, 30, 60);
+	    panel.setBorder(new CompoundBorder(lineP, paddingP));
+	    
+	    panel.setBackground(Color.white);
+	    
+	    JPanel panelImages = new JPanel(new GridLayout(1, 2, 40, 10));
+
+	    ImageIcon icon = new ImageIcon(getClass().getResource(animal.getImg())); 
+	    Image scaledImg = icon.getImage().getScaledInstance(180, 180, Image.SCALE_SMOOTH);
+	    JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
+	    imageLabel.setBackground(null);
+
+	    ImageIcon iconTrofeu = new ImageIcon(getClass().getResource("/images/fundo/trofeu.png")); 
+	    Image scaledImgTrofeu = iconTrofeu.getImage().getScaledInstance(180, 180, Image.SCALE_SMOOTH);
+	    JLabel imageTrofeuLabel = new JLabel(new ImageIcon(scaledImgTrofeu));
+	    imageTrofeuLabel.setBackground(null);
+	    
+	    panelImages.setBackground(null);
+	    panelImages.add(imageLabel);
+	    panelImages.add(imageTrofeuLabel);
+	    
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.gridx = 0;
+	    gbc.insets = new Insets(15, 15, 15, 15);
+	    gbc.gridy = 0;
+	    
+	    panel.add(panelImages, gbc);
+
+	    JLabel label = new JLabel(
+	    	    "<html><center>" +
+	    	    "<span style='font-size:24px; font-weight:bold;'>Parabéns!</span><br>" +
+	    	    "O jogador <b>" + animal.getDono() + "</b> evoluiu para <b>" + animal.getNome() + "</b> " +
+	    	    "e ganhou o jogo!" +
+	    	    "</center></html>",
+	    	    SwingConstants.CENTER
+	    	);
+	    
+	    label.setFont(fredokaFont.deriveFont(Font.PLAIN, 19f));
+	    label.setOpaque(true);
+	    label.setBackground(Color.white);
+	    label.setForeground(Color.BLACK);
+
+	    Border line = BorderFactory.createLineBorder(Color.white, 5);
+	    Border padding = BorderFactory.createEmptyBorder(20, 10, 20, 10);
+	    label.setBorder(new CompoundBorder(line, padding));
+
+	    GridBagConstraints gbcText = new GridBagConstraints();
+	    gbcText.gridx = 0;
+	    gbcText.insets = new Insets(15, 15, 15, 15);
+	    gbcText.gridy = 1;
+	    panel.add(label, gbcText);
+
+	    
+	    JButton button = new JButton("Sair");
+	    Border paddingBtn = BorderFactory.createEmptyBorder(10, 60, 10, 60);
+	    button.setBorder(paddingBtn);
+	    button.addActionListener(e -> System.exit(0));
+	    button.setFont(fredokaFont.deriveFont(Font.PLAIN, 20f));
+	    button.setForeground(Color.white);
+	    button.setBackground(new Color(255, 216, 44));
+	    button.setFocusPainted(false);
+	    
+	    GridBagConstraints gbcBtn = new GridBagConstraints();
+	    gbcBtn.gridx = 0;
+	    gbcBtn.insets = new Insets(15, 15, 0, 15);
+	    gbcBtn.gridy = 2;
+	    panel.add(button, gbcBtn);
+	    
+
+	    int dialogWidth = (int) (screenSize.width * 0.3);
+	    int dialogHeight = (int) (screenSize.height * 0.5);
+	    dialog.setSize(dialogWidth, dialogHeight);
+
+	    dialog.setContentPane(panel);
+	    dialog.pack();
+	    dialog.setLocationRelativeTo(null);
+	    dialog.setVisible(true);
+	}
+
 
 	public void trocarPresas(Animal animal) {
 		List<PresaView> listaNova = new ArrayList<PresaView> ();

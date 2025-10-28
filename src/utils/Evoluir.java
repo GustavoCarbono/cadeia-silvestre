@@ -35,10 +35,10 @@ public class Evoluir {
 	}
 	
 	public boolean evoluir(Animal animal, Partida partida, DAO dao, Interface gui) {
-
-		
-		AnimaisDAO evolucao = dao.buscarAnimal(animal.getEvolucao()); //chama tabela do mysql
-		
+		System.out.println(animal.getNome());
+		System.out.println(animal.getEvolucao());
+		AnimaisDAO evolucao = DAO.buscarAnimal(animal.getEvolucao()); //chama tabela do mysql
+		System.out.println(evolucao.getNome());
 		
 		Celula celula = (animal.getCaminho() == 0) 
 				? partida.getTabuleiro().getGridMain(animal.getX()) 
