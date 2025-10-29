@@ -138,7 +138,7 @@ public class TelaQuiz extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         
         setLayout(new GridBagLayout());
-        getRootPane().setBorder(BorderFactory.createLineBorder(new Color(48, 176, 255), 9)); // 💙 blue border
+        getRootPane().setBorder(BorderFactory.createLineBorder(new Color(48, 176, 255), 9));
         getContentPane().setBackground(new Color(255, 255, 255));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 10, 20, 10);

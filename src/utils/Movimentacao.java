@@ -30,6 +30,8 @@ public class Movimentacao {
 				? tabuleiro.getGridMain(animal.getX()) 
 				: tabuleiro.getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
 		
+		gui.mostrarDadoModal(animal, numRdm);
+		
 		gui.bloquearBotao();
 		
 		if(celula.getOutroCaminho()) {
@@ -47,7 +49,7 @@ public class Movimentacao {
 		
 
 
-		Timer timer = new Timer(150, null);
+		Timer timer = new Timer(200, null);
 		
   		
 	    timer.addActionListener(e -> {

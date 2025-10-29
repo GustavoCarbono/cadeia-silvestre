@@ -9,6 +9,8 @@ import minijogo.JogadorSelecionado;
 import model.DAO;
 import model.PredacaoDAO;
 import partida.*;
+import tutorial.Tela1;
+import tutorial.Tela2;
 import view.Interface;
 import view.PresaView;
 
@@ -16,6 +18,11 @@ public class Aplicacao {
     Partida partida;
 
     public static void main(String[] args) {
+	    	 Tela1 telaTutorial1 = new Tela1(null);
+
+	         
+	         Tela2 telaTutorial2 = new Tela2(null);
+
             DAO dao = new DAO();
             dao.conectar();
 

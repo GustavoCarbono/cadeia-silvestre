@@ -41,7 +41,7 @@ public class TelaSelecaoJogadores extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) (screenSize.width * 0.35);
+        int width = (int) (screenSize.width * 0.41);
         int height = (int) (screenSize.height * 0.95);
         setSize(width, height);
         setLocationRelativeTo(parent);
@@ -104,7 +104,7 @@ public class TelaSelecaoJogadores extends JDialog {
             
             JComboBox<String> dropdown = new JComboBox<>(animais);
             dropdown.setBorder(null);
-            dropdown.setFont(lilitaFont.deriveFont(Font.PLAIN, 16f));
+            dropdown.setFont(lilitaFont.deriveFont(Font.PLAIN, 18f));
             dropdown.setBackground(Color.WHITE);
             dropdown.setPreferredSize(new Dimension(0, 30));
             dropdown.setSelectedIndex(-1);

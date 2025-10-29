@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,19 +12,23 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -217,6 +222,8 @@ public class Interface extends JFrame {
         	
         }
 
+     // Bind keys to trigger btnDado
+       
     }
 
     
@@ -351,6 +358,18 @@ public class Interface extends JFrame {
         btnDado.setHorizontalTextPosition(SwingConstants.LEFT);
         btnDado.setVerticalTextPosition(SwingConstants.CENTER);
         btnDado.setIconTextGap(10);
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('A'), "rollDice");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('L'), "rollDice");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('a'), "rollDice");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('l'), "rollDice");
+        
+        panel.getActionMap().put("rollDice", new AbstractAction() {
+	       @Override
+	       public void actionPerformed(ActionEvent e) {
+	           btnDado.doClick(); // simulates the button click
+	       }
+	   	});
 
         
         JButton sairJogo = new JButton("Sair do Jogo");
@@ -708,6 +727,58 @@ public class Interface extends JFrame {
 	     }
         
 
+	}
+	
+	public void mostrarDadoModal(Animal animal, int valor) {
+		//configuracoes padrao de jdialog (modal true pra interromper o jogo)
+	    JDialog dialog = new JDialog((Frame) null, "Dado", true);
+	    dialog.setUndecorated(true);
+	    dialog.setBackground(new Color(0,0,0,0));
+
+	    ((JComponent) dialog.getContentPane()).setOpaque(false);
+	    
+	    // layout gridbag pra deixar tudo no meio
+	    dialog.setLayout(new GridBagLayout());
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    gbc.anchor = GridBagConstraints.CENTER;
+	    
+	    ImageIcon rollingGif = new ImageIcon(getClass().getResource("/images/fundo/diceroll.gif"));
+	    JLabel label = new JLabel(rollingGif);
+	    label.setOpaque(false);
+	    label.setHorizontalAlignment(SwingConstants.CENTER);
+	    label.setVerticalAlignment(SwingConstants.CENTER);
+
+	    dialog.add(label, gbc);
+
+	    dialog.pack();
+	    dialog.setLocationRelativeTo(null);
+
+	    //delay de 1000 segundos pro dado rolar e depois mostrar o valor do dado rolado
+	    Timer switchTimer = new Timer(1000, ev -> {
+	        ((Timer) ev.getSource()).stop();
+	    
+	        ImageIcon finalDice = new ImageIcon(getClass().getResource("/images/fundo/dice" + valor + ".png"));
+	        int width = 140;
+	        int height = 140;
+	        Image scaled = finalDice.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+	        finalDice = new ImageIcon(scaled);
+	        
+	        label.setIcon(finalDice);
+	        dialog.pack(); 
+	        dialog.setLocationRelativeTo(null);
+	    });
+	    switchTimer.start();
+
+	    //roda junto do outro timer, fecha o dialog depois de 1.2s dps do switchtimer
+	    Timer closeTimer = new Timer(2200, e -> {
+	        ((Timer) e.getSource()).stop();
+	        dialog.dispose();
+	    });
+	    closeTimer.start();
+
+	    dialog.setVisible(true); 
 	}
     
 	public void terminarJogo() {
