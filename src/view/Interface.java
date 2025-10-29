@@ -772,7 +772,7 @@ public class Interface extends JFrame {
 	    switchTimer.start();
 
 	    //roda junto do outro timer, fecha o dialog depois de 1.2s dps do switchtimer
-	    Timer closeTimer = new Timer(3500, e -> {
+	    Timer closeTimer = new Timer(2700, e -> {
 	        ((Timer) e.getSource()).stop();
 	        dialog.dispose();
 	    });
