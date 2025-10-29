@@ -236,7 +236,7 @@ public class TelaQuiz extends JDialog {
     	Animal animal = jogador.getAnimal();
     	
 		if (resposta == p.indiceCorreto) {
-			animal.setTotalPontos(animal.getTotalPontos() + 30);
+			animal.setTotalPontos(animal.getTotalPontos() + 10);
 			gui.mostrarMensagemTemporaria(
 				"Acertou! +10 pontos para " + jogador.getJogador(),
 				3000,
