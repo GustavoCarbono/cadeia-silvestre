@@ -36,8 +36,8 @@ public class Tela1 extends JDialog {
         setTitle("Regras Gerais");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) (screenSize.width * 0.45);
-        int height = (int) (screenSize.height * 0.95);
+        int width = (int) (screenSize.width * 0.4);
+        int height = (int) (screenSize.height * 0.9);
         setSize(width, height);
         setAlwaysOnTop(true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

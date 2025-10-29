@@ -40,8 +40,8 @@ public class Tela2 extends JDialog {
         getRootPane().setBorder(BorderFactory.createLineBorder(new Color(48, 176, 255), 9));
         // Screen dimensions
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) (screenSize.width * 0.5);
-        int height = (int) (screenSize.height * 0.95);
+        int width = (int) (screenSize.width * 0.41);
+        int height = (int) (screenSize.height * 0.9);
         setSize(width, height);
         setLocationRelativeTo(null);
 
@@ -57,7 +57,7 @@ public class Tela2 extends JDialog {
 
         // === Título ===
         JLabel casasTitulo = new JLabel("Casas", SwingConstants.CENTER);
-        casasTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        casasTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
         casasTitulo.setFont(bungeeFont.deriveFont(Font.PLAIN, 25f));
         gbc.gridy = 0;
         containerPanel.add(casasTitulo, gbc);
@@ -105,7 +105,7 @@ public class Tela2 extends JDialog {
                 dispose();
             }
         });
-        gbc.insets = new Insets(25, 0, 0, 0);
+        gbc.insets = new Insets(45, 0, 0, 0);
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;

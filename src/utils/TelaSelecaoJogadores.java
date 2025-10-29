@@ -41,7 +41,7 @@ public class TelaSelecaoJogadores extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) (screenSize.width * 0.41);
+        int width = (int) (screenSize.width * 0.33);
         int height = (int) (screenSize.height * 0.95);
         setSize(width, height);
         setLocationRelativeTo(parent);

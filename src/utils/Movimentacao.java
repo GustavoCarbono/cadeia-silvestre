@@ -132,6 +132,12 @@ public class Movimentacao {
 	      		    quiz.executarQuiz(jogador, partida, gui); 
 	      		    quiz.pack(); 
 	      		    quiz.setLocationRelativeTo(gui);
+	      		    
+	      		  if (animal.getPontosEvoluir() <= animal.getTotalPontos()) {		   
+		           		 partidaAcabou = evoluir.aumentarPontos(animal, partida, 0, dao, gui);
+		           		 delay = 3000;
+	      		  }
+	      		    
 
 	      		}
 	      		//prevenção pra erro na evolução por dar voltas no tabuleiro. se o animal dessse uma volta que o levasse a evoluir e depois caisse numa casa de predador, o animal evoluiria mesmo com a quantidade de pontos inferior ao necessario
