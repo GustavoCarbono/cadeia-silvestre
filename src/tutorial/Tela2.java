@@ -48,11 +48,11 @@ public class Tela2 extends JDialog {
         // === Container principal com GridBagLayout ===
         containerPanel = new JPanel(new GridBagLayout());
         containerPanel.setBackground(Color.WHITE);
-        containerPanel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
+        containerPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.weightx = 1.0;
-        gbc.insets = new Insets(5, 0, 5, 0);
+        gbc.insets = new Insets(5, 0, 15, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // === Título ===

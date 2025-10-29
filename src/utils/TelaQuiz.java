@@ -97,12 +97,12 @@ public class TelaQuiz extends JDialog {
 			}, 1));
 
 		perguntas.add(new Pergunta(
-			"Em uma cadeia alimentar marinha, quem geralmente é o produtor?",
+			"Um gavião que se alimenta de um rato é um exemplo de:",
 			new String[]{
-				"Peixes",
-				"Algas e fitoplâncton",
-				"Tubarões",
-				"Caranguejos"
+				"Produtor",
+				"Consumidor Secundário",
+				"Consumidor Primário",
+				"Decompositor"
 			}, 1));
 
 		perguntas.add(new Pergunta(

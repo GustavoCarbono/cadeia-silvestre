@@ -64,6 +64,7 @@ public class Tela1 extends JDialog {
         // --- SEÇÕES ---
         JPanel objetivoBox = criarCaixa(
                 "Objetivo:",
+                "Role o dado com as teclas A ou L<br><br>" +
                 "Atravesse o tabuleiro do jogo com o seu animal para coletar pontos.<br><br>"
                         + "Alcance uma quantia específica de pontos, capturando presas, dando voltas e acertando perguntas, para evoluir seu animal. <br><br>"
                         + "O primeiro a chegar na quinta evolução ganha o jogo.",

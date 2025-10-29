@@ -29,10 +29,11 @@ public class Movimentacao {
 		Celula celula = (animal.getCaminho() == 0) 
 				? tabuleiro.getGridMain(animal.getX()) 
 				: tabuleiro.getCelAlternativo(animal.getX(), (animal.getCaminho()-1));
+		gui.bloquearBotao();
 		
 		gui.mostrarDadoModal(animal, numRdm);
 		
-		gui.bloquearBotao();
+
 		
 		if(celula.getOutroCaminho()) {
 			boolean entrar = false;//método que ver se ele quer entrar

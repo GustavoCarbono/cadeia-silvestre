@@ -70,7 +70,7 @@ public class Interface extends JFrame {
     private JPanel subPanel = new JPanel(new GridBagLayout());
 	
 	private JPanel infoJogo = new JPanel(new GridLayout(2, 1, 1, 10)); 
-    private JPanel acoesJogo = new JPanel(new GridLayout(2, 1, 1, 5));
+    private JPanel acoesJogo = new JPanel(new GridLayout(2, 1, 1, 10));
     private JPanel jogadoresPanel = new JPanel(new GridLayout(2, 1, 1, 10));
     
     private JPanel[] infoJogadores = new JPanel[4];
@@ -319,20 +319,20 @@ public class Interface extends JFrame {
         infoJogo.setBackground(null);
 
         TitledBorder border = BorderFactory.createTitledBorder("Informações");
-        border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 18f));
+        border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 20f));
         infoJogo.setBorder(border);
 
         numeroRodadoLabel = new JLabel("Início de Jogo", SwingConstants.CENTER);
         jogadorAtualLabel = new JLabel("Jogador atual: " + partida.getOrdemJogador().get(0).getJogador(), SwingConstants.CENTER);
 
-        numeroRodadoLabel.setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
+        numeroRodadoLabel.setFont(fredokaFont.deriveFont(Font.PLAIN, 20f));
 
-        jogadorAtualLabel.setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
+        jogadorAtualLabel.setFont(fredokaFont.deriveFont(Font.PLAIN, 20f));
         infoJogo.add(numeroRodadoLabel);
         infoJogo.add(jogadorAtualLabel);
         
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 5, 30, 5);
+        gbc.insets = new Insets(30, 5, 40, 5);
         gbc.gridy = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 0.7;
@@ -343,7 +343,7 @@ public class Interface extends JFrame {
     
     public void addInfoAcoes_subPanel(JPanel panel) {
         TitledBorder border = BorderFactory.createTitledBorder("Ações");
-        border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 18f));
+        border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 20f));
         acoesJogo.setBorder(border);
 
         ImageIcon dadoIcon = new ImageIcon(getClass().getResource("/images/fundo/dice.png"));
@@ -378,15 +378,15 @@ public class Interface extends JFrame {
         sairJogo.setFocusPainted(false);
  
         
-        btnDado.setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
-        sairJogo.setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
+        btnDado.setFont(fredokaFont.deriveFont(Font.PLAIN, 20f));
+        sairJogo.setFont(fredokaFont.deriveFont(Font.PLAIN, 20f));
 
         acoesJogo.add(btnDado);
         acoesJogo.add(sairJogo);
         
         acoesJogo.setBackground(null);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 5, 10, 5);
+        gbc.insets = new Insets(20, 5, 20, 5);
         gbc.gridy = 1;
         gbc.weighty = 0.9;
 
@@ -411,10 +411,10 @@ public class Interface extends JFrame {
         jogadoresPanel.setBackground(null);
 
         TitledBorder border = BorderFactory.createTitledBorder("Jogadores");
-        border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 18f));
+        border.setTitleFont(bungeeFont.deriveFont(Font.PLAIN, 20f));
         jogadoresPanel.setBorder(border);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(30, 5, 30, 5);
+        gbc.insets = new Insets(40, 5, 30, 5);
         gbc.gridy = 2;
         gbc.weighty = 1.01;
         gbc.fill = GridBagConstraints.BOTH;
@@ -436,12 +436,12 @@ public class Interface extends JFrame {
                 infoJogadores[i].add(labelsJogadores[i][j]);
             }
             for (int j = 0; j < 1; j++) { 
-            	labelsJogadores[i][j].setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
+            	labelsJogadores[i][j].setFont(fredokaFont.deriveFont(Font.PLAIN, 22f));
             	infoJogadores[i].add(labelsJogadores[i][j]);
             }
             
             for (int j = 1; j < 4; j++) {
-                labelsJogadores[i][j].setFont(fredokaFont.deriveFont(Font.PLAIN, 15f));
+                labelsJogadores[i][j].setFont(fredokaFont.deriveFont(Font.PLAIN, 18f));
 
                 infoJogadores[i].add(labelsJogadores[i][j]);
             }
@@ -772,7 +772,7 @@ public class Interface extends JFrame {
 	    switchTimer.start();
 
 	    //roda junto do outro timer, fecha o dialog depois de 1.2s dps do switchtimer
-	    Timer closeTimer = new Timer(2200, e -> {
+	    Timer closeTimer = new Timer(3500, e -> {
 	        ((Timer) e.getSource()).stop();
 	        dialog.dispose();
 	    });

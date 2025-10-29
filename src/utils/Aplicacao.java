@@ -113,6 +113,7 @@ public class Aplicacao {
                         cores.get(i),
                         presas
                     );
+                    
                     jogadores.add(new Jogador(sel.getNomeJogador(), animal));
                 }
             }
